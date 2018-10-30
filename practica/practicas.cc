@@ -20,6 +20,16 @@
 // variable que contiene un puntero a la escena
 Escena *escena = nullptr ;
 
+//Este función será la función gestora del evento desocupado
+//(idle event), es decir, es la función que se llamará
+//periódicamente con las animaciones activadas
+void funcion_desocupado(){
+
+	if(escena != nullptr)
+		escena->mgeDesocupado();
+
+}
+
 
 //***************************************************************************
 // Funcion principal que redibuja la escena

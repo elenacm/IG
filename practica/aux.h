@@ -45,5 +45,7 @@
 
 #include "tuplasg.h" // tipos: Tupla3f, Tupla2f, Tupla3d, etc.........
 
+//añadir el metodo funcion_desocupado
+void funcion_desocupado();
 
 #endif // AUX_H_INCLUDED

@@ -154,7 +154,7 @@ void Escena::dibujar()
 {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
-  glEnable(GL_CULL_FACE);
+  //glEnable(GL_CULL_FACE);
    ejes.draw();
 	dibujar_objeto_actual();
 }
@@ -172,7 +172,10 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
    using namespace std ;
    cout << "Tecla pulsada: '" << tecla << "'" << endl;
 
-   switch( toupper(tecla) )
+   if(tecla != 'z')
+    toupper(tecla);
+
+   switch( tecla )
    {
       case 'Q' :
          // salir
@@ -199,6 +202,24 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
            cout << "modo_dibujado == inmediato" << endl;
          }
          break;
+      case 'P': //Activar el parámetro siguiente al actual
+        //llamar a siguienteParametro de la clase objJerarquico
+        break;
+      case 'A': //activar/desactivar animaciones
+        //conmutarAnimaciones de la clase Escena
+        break;
+      case 'Z': //incrementa el valor del parámetro actual del objeto
+        //incrementaParamAct de objJerarquico
+        break;
+      case 'z': //decrementa el valor del paraámetro actal del objeto
+        //decrementaParamAct
+        break;
+      case '>': //incrementa el valor usado para las animaciones
+        //acelerar de objJerarquico
+        break;
+      case '>': //decrementa el valor usado para las animaciones
+        //decelerar de objJerarquico
+        break;
    }
    return false ;
 }
@@ -270,4 +291,10 @@ void Escena::change_observer()
    glTranslatef( 0.0, 0.0, -Observer_distance );
    glRotatef( Observer_angle_x, 1.0 ,0.0, 0.0 );
    glRotatef( Observer_angle_y, 0.0, 1.0, 0.0 );
+}
+
+//Se encarga de actualizar el estado de los parámetros del objeto jerárquico
+void Escena::mgeDesocupado(){
+  objJerarquico->actualizarEstado();
+  glutPostRedisplay;
 }

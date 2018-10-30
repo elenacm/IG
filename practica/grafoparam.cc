@@ -17,11 +17,7 @@ GrafoParam::GrafoParam()
 {
    cilindro = new Cilindro( 4, 16 );
    cubo     = new Cubo();
-
-   esfera1 = new Esfera(50, 10);
-   esfera2 = new Esfera(50, 10);
-   esfera3 = new Esfera(50, 10);
-   cilindro1 = new Cilindro( 4, 16 );
+   esfera = new Esfera(50, 10);
 }
 // -----------------------------------------------------------------------------
 // actualizar valor efectivo de un parámetro (a partir de su valor no acotado)
@@ -105,40 +101,45 @@ void GrafoParam::draw( const ModoVis p_modo_vis, const bool p_usar_diferido )
    glColor3f(0.0, 0.0, 0.0);
 
    glPushMatrix();
+    glTranslatef(0.0, -0.35, 0.0);
     //oreja izquierda
-    oreja(0.09, -0.15, 1.1, 0.0);
+    oreja(0.09, -0.15, 1.0, 0.0);
     //oreja derecha
-    oreja(0.09, 0.15, 1.1, 0.0);
+    oreja(0.09, 0.15, 1.0, 0.0);
     //cabeza
-    glTranslatef(0.0, 0.8, 0.0);
-    cabezaOcuerpo(0.2);
+    glTranslatef(0.0, 0.7, 0.0);
+    cabeza(0.2, 0.1, 0.1);
     //cuerpo + piernas + brazos
     glPushMatrix();
       //glTranslatef(0.0, 0.5, 0.0);
       //cuerpo + piernas
-      cabezaOcuerpo(-0.4);
+      cuerpo(-0.3, 0.7);
       //pierna izquierda
       glPushMatrix();
-        glTranslatef(-0.2, -1.0, 0.0);
+        glTranslatef(-0.2, -0.85, 0.0);
+        articulacion(0.075);
         extremidad(0.075, 0.075, 0.3);
       glPopMatrix();
       //pierna derecha
       glPushMatrix();
-        glTranslatef(0.2, -1.0, 0.0);
+        glTranslatef(0.2, -0.85, 0.0);
+        articulacion(0.075);
         extremidad(0.075, 0.075, 0.3);
       glPopMatrix();
       //brazo derecho
       glPushMatrix();
-        glTranslatef(0.4, -0.2, 0.0);
-        glRotatef(90, 0.0, 0.0, 1.0);
+        glTranslatef(0.25, 0.0, 0.0);
+        glRotatef(45, 0.0, 0.0, 1.0);
         glTranslatef(0.0, -0.2, 0.0);
+        articulacion(0.075);
         extremidad(0.075, 0.075, 0.3);
       glPopMatrix();
       //brazo izquierdo
       glPushMatrix();
-        glTranslatef(-0.4, -0.2, 0.0);
-        glRotatef(-90, 0.0, 0.0, 1.0);
+        glTranslatef(-0.25, 0.0, 0.0);
+        glRotatef(-45, 0.0, 0.0, 1.0);
         glTranslatef(0.0, -0.2, 0.0);
+        articulacion(0.075);
         extremidad(0.075, 0.075, 0.3);
       glPopMatrix();
     glPopMatrix();
@@ -152,14 +153,20 @@ void GrafoParam::draw( const ModoVis p_modo_vis, const bool p_usar_diferido )
 //de altura alturaC y radio radioC
 void GrafoParam::extremidad(const float radioE, const float radioC, const float alturaC){
 
+/*  glPushMatrix();
+    articulacion(0.075);
+  glPopMatrix();*/
   glPushMatrix();
-    glTranslatef(0.0, -radioE, 0.0);
-    glScalef(radioE, radioE, radioE);
-    esfera1->draw(modo_vis, usar_diferido);
-  glPopMatrix();
-  glPushMatrix();
-    glScalef(radioC, alturaC, radioC);
-    cilindro1->draw(modo_vis, usar_diferido);
+    glTranslatef(0.0, -alturaC, 0.0);
+    glPushMatrix();
+      glTranslatef(0.0, -radioE, 0.0);
+      glScalef(radioE, radioE, radioE);
+      esfera->draw(modo_vis, usar_diferido);
+    glPopMatrix();
+    glPushMatrix();
+      glScalef(radioC, alturaC, radioC);
+      cilindro->draw(modo_vis, usar_diferido);
+    glPopMatrix();
   glPopMatrix();
 
 }
@@ -172,19 +179,48 @@ void GrafoParam::oreja(const float radioE, const float Tx, const float Ty, const
     glTranslatef(Tx, Ty, Tz);
     glTranslatef(0.0, radioE, 0.0);
     glScalef(radioE, radioE, radioE);
-    esfera2->draw(modo_vis, usar_diferido);
+    esfera->draw(modo_vis, usar_diferido);
   glPopMatrix();
 
 }
 
 //-----------------------------------------------------------
 //dibuja un sub-objeto parametrizado
-void GrafoParam::cabezaOcuerpo(const float radioE){
+void GrafoParam::cabeza(const float radioE, const float radioC, const float alturaC){
+
+  glPushMatrix();
+    glTranslatef(0.0, -0.0, 0.0);
+    glScalef(radioC, alturaC, radioC);
+    cilindro->draw(modo_vis, usar_diferido);
+  glPopMatrix();
+  glPushMatrix();
+    glTranslatef(0.0, radioE+alturaC-0.05, 0.0);
+    glScalef(radioE, radioE, radioE);
+    esfera->draw(modo_vis, usar_diferido);
+  glPopMatrix();
+
+}
+
+//-----------------------------------------------------------
+//dibuja un sub-objeto parametrizado
+void GrafoParam::cuerpo(const float radioC, const float alturaC){
+
+  glPushMatrix();
+    glTranslatef(0.0, -alturaC, 0.0);
+    glScalef(radioC, alturaC, radioC);
+    cilindro->draw(modo_vis, usar_diferido);
+  glPopMatrix();
+
+}
+
+//-----------------------------------------------------------
+//dibuja un sub-objeto parametrizado
+void GrafoParam::articulacion(const float radioE){
 
   glPushMatrix();
     glTranslatef(0.0, radioE, 0.0);
     glScalef(radioE, radioE, radioE);
-    esfera3->draw(modo_vis, usar_diferido);
+    esfera->draw(modo_vis, usar_diferido);
   glPopMatrix();
 
 }

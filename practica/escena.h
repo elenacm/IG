@@ -72,5 +72,7 @@ class Escena
 	bool teclaPulsada( unsigned char Tecla1, int x, int y ) ;
 	void teclaEspecial( int Tecla1, int x, int y );
 
+  void mgeDesocupado();
+
 };
 #endif

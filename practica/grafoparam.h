@@ -41,21 +41,17 @@ class GrafoParam
 
    void oreja(const float radioE, const float Tx, const float Ty, const float Tz);
 
-   void cabezaOcuerpo(const float radioE);
+   void cabeza(const float radioE, const float radioC, const float alturaC);
+
+   void cuerpo(const float radioC, const float alturaC);
+
+   void articulacion(const float radioE);
 
    // objetos tipo malla indexada (nodos terminales)
 
    Cilindro * cilindro = nullptr ;
    Cubo *     cubo     = nullptr ;
-
-   Esfera * esfera1 = nullptr;
-   Esfera * esfera2 = nullptr;
-   Esfera * esfera3 = nullptr;
-   Esfera * esfera4 = nullptr;
-   Esfera * esfera5 = nullptr;
-   Esfera * esfera6 = nullptr;
-   Cilindro * cilindro1 = nullptr;
-   Cilindro * cilindro2 = nullptr;
+   Esfera * esfera = nullptr;
 
    // parámetros de la llamada actual (o última) a 'draw'
    ModoVis modo_vis ;      // modo de visualización
