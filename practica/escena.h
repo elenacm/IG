@@ -34,6 +34,10 @@ class Escena
 	void change_projection( const float ratio_xy );
 	void change_observer();
 
+  void conmutarAcciones();
+
+  bool animacion = false;
+
    int objeto_actual = 0 , // objeto actual (el que se visualiza)
        num_objetos   = 0 , // número de objetos (actualizado al crear los objetos en el constructor)
        num_modos = 0, //número de modos (actualizado al crear los objetos en el constructor)

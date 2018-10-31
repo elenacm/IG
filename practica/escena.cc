@@ -95,7 +95,7 @@ void Escena::dibujar_objeto_actual()
 
    switch( objeto_actual )
    {
-      /*case 0:
+      case 0:
          if ( cubo != nullptr )
           if(modo_actual == 3) cubo->draw(true, modo_dibujado) ;
           else cubo->draw(false, modo_dibujado);
@@ -131,8 +131,8 @@ void Escena::dibujar_objeto_actual()
         if ( esfera != nullptr )
           if(modo_actual == 3) esfera->draw(true, modo_dibujado) ;
           else esfera->draw(false, modo_dibujado);
-        break;*/
-      case 0:
+        break;
+      case 7:
         if( objJerarquico != nullptr)
           if(modo_actual == 3) objJerarquico->draw(Chess, false) ;
           else objJerarquico->draw(Point, true);
@@ -204,21 +204,27 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break;
       case 'P': //Activar el parámetro siguiente al actual
         //llamar a siguienteParametro de la clase objJerarquico
+        objJerarquico->siguienteParametro();
         break;
       case 'A': //activar/desactivar animaciones
         //conmutarAnimaciones de la clase Escena
+        conmutarAcciones();
         break;
       case 'Z': //incrementa el valor del parámetro actual del objeto
         //incrementaParamAct de objJerarquico
+        objJerarquico->incrementaParamAct();
         break;
       case 'z': //decrementa el valor del paraámetro actal del objeto
         //decrementaParamAct
+        objJerarquico->decrementaParamAct();
         break;
       case '>': //incrementa el valor usado para las animaciones
         //acelerar de objJerarquico
+        objJerarquico->acelerar();
         break;
-      case '>': //decrementa el valor usado para las animaciones
+      case '<': //decrementa el valor usado para las animaciones
         //decelerar de objJerarquico
+        objJerarquico->decelerar();
         break;
    }
    return false ;
@@ -295,6 +301,27 @@ void Escena::change_observer()
 
 //Se encarga de actualizar el estado de los parámetros del objeto jerárquico
 void Escena::mgeDesocupado(){
+
   objJerarquico->actualizarEstado();
-  glutPostRedisplay;
+  glutPostRedisplay();
+
+}
+
+void Escena::conmutarAcciones(){
+
+  if(objeto_actual == 7){
+    if(!animacion){
+      animacion = true;
+      objJerarquico->inicioAnimaciones();
+      glutIdleFunc(funcion_desocupado);
+    }
+    else{
+      animacion = false;
+      glutIdleFunc(nullptr);
+    }
+  }
+  else{
+    std::cout << "Advertencia -> no es el objeto jerarquico" << std::endl;
+  }
+
 }

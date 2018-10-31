@@ -51,7 +51,7 @@ class ObjJerarquico
       // inicio de las animaciones.  Se debe llamar inmediatamente después de
       // que el usuario active las animaciones con la tecla correspondiente
       // (no usa ninguna orden de OpenGL)
-      void inicioAnimaciones( );
+      void inicioAnimaciones();
 
       // función para actualizar el estado de los parámetros al instante de
       // tiempo actual. Esta función debe llamarse cada cierto tiempo para ir

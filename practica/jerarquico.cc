@@ -109,7 +109,7 @@ void ObjJerarquico::decelerar()
 // Pone 't_anim' a cero.
 // (no usa ninguna orden de OpenGL)
 
-void ObjJerarquico::inicioAnimaciones( )
+void ObjJerarquico::inicioAnimaciones()
 {
    using namespace std::chrono ;
    ultima_actu = steady_clock::now() ;
