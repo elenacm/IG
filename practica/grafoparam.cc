@@ -104,8 +104,6 @@ void GrafoParam::draw( const ModoVis p_modo_vis, const bool p_usar_diferido )
       cubo->draw( modo_vis, usar_diferido );
    glPopMatrix();*/
 
-   glColor3f(0.0, 0.0, 0.0);
-
    glPushMatrix();
    glTranslatef(0.0, 0.35, 0.0);
     glPushMatrix();

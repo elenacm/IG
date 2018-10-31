@@ -49,7 +49,9 @@ class ObjMallaIndexada
    void calcular_normales() ; // calcula tabla de normales de vértices (práctica 3)
 
    GLuint id_vbo_ver = 0,
-     id_vbo_tri = 0;
+          id_vbo_tri = 0,
+          id_vbo_par = 0,
+          id_vbo_impar = 0;
    std::vector<Tupla3f> vertices ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
    std::vector<Tupla3i> triangulos ; // una terna de 3 enteros por cada cara o triángulo
 
