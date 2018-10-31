@@ -12,7 +12,7 @@
 
 #include "malla.h" // añadir .h de cualquier objetos malla indexada usados....
 
-constexpr int num_parametros = 4 ; // número de parámetros o grados de libertad
+constexpr int num_parametros = 5 ; // número de parámetros o grados de libertad
                                    // de este modelo
 
 class GrafoParam
@@ -39,9 +39,9 @@ class GrafoParam
 
    void extremidad(const float ag_rotacion, const float radioE, const float radioC, const float alturaC);
 
-   void oreja(const float radioE, const float Tx, const float Ty, const float Tz);
+   void oreja(const float traslacion, const float radioE, const float Tx, const float Ty, const float Tz);
 
-   void cabeza(const float radioE, const float radioC, const float alturaC);
+   void cabeza(const float traslacion, const float radioE, const float radioC, const float alturaC);
 
    void cuerpo(const float radioC, const float alturaC);
 

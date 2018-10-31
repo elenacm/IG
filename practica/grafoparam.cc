@@ -53,11 +53,11 @@ void GrafoParam::actualizarValorEfe( const unsigned iparam, const float valor_na
        //cabeza
        // altura 1: oscila entre 0.7 y 1.3, a 0.5 oscilaciones por segundo
        // inicialmente es 1.0 (media de los valores extremos)
-       altura_1= 1.0 + 0.3*sin( 0.5*(2.0*M_PI*valor_na) );
+       altura_1 = 0.1*sin( 0.5*(2.0*M_PI*valor_na) );
      break ;
      case 4:
        // altura 2: oscila entre 1.1 y 1.9, a 0.8 oscilaciones por segundo
-       altura_2 = 1.5 + 0.4*sin( 0.8*(2.0*M_PI*valor_na) );
+         altura_2 = 1.5 + 0.4*sin( 0.8*(2.0*M_PI*valor_na) );
      break ;
    }
 }
@@ -111,13 +111,9 @@ void GrafoParam::draw( const ModoVis p_modo_vis, const bool p_usar_diferido )
     glPushMatrix();
       glRotatef(ag_rotacion_3, 0.0, 1.0, 0.0);
       glTranslatef(0.0, -0.7, 0.0);
-      //oreja izquierda
-      oreja(0.09, -0.15, 1.0, 0.0);
-      //oreja derecha
-      oreja(0.09, 0.15, 1.0, 0.0);
       //cabeza
       glTranslatef(0.0, 0.7, 0.0);
-      cabeza(0.2, 0.1, 0.1);
+      cabeza(altura_1, 0.2, 0.1, 0.5);
     glPopMatrix();
     //cuerpo + piernas + brazos
     glPushMatrix();
@@ -179,10 +175,10 @@ void GrafoParam::extremidad(const float ag_rotacion, const float radioE, const f
 
 //-----------------------------------------------------------
 //dibuja un sub-objeto parametrizado
-void GrafoParam::oreja(const float radioE, const float Tx, const float Ty, const float Tz){
+void GrafoParam::oreja(const float traslacion, const float radioE, const float Tx, const float Ty, const float Tz){
 
   glPushMatrix();
-    glTranslatef(Tx, Ty, Tz);
+    glTranslatef(Tx, Ty+traslacion, Tz);
     glTranslatef(0.0, radioE, 0.0);
     glScalef(radioE, radioE, radioE);
     esfera->draw(modo_vis, usar_diferido);
@@ -192,18 +188,22 @@ void GrafoParam::oreja(const float radioE, const float Tx, const float Ty, const
 
 //-----------------------------------------------------------
 //dibuja un sub-objeto parametrizado
-void GrafoParam::cabeza(const float radioE, const float radioC, const float alturaC){
+void GrafoParam::cabeza(const float traslacion, const float radioE, const float radioC, const float alturaC){
 
   glPushMatrix();
-    glTranslatef(0.0, 0.0, 0.0);
+    glTranslatef(0.0, -alturaC*0.7 + traslacion, 0.0);
     glScalef(radioC, alturaC, radioC);
     cilindro->draw(modo_vis, usar_diferido);
   glPopMatrix();
   glPushMatrix();
-    glTranslatef(0.0, radioE+alturaC-0.05, 0.0);
+    glTranslatef(0.0, -radioE+alturaC-0.05 + traslacion, 0.0);
     glScalef(radioE, radioE, radioE);
     esfera->draw(modo_vis, usar_diferido);
   glPopMatrix();
+  //oreja izquierda
+  oreja(traslacion, 0.09, -0.15, radioE+0.1, 0.0);
+  //oreja derecha
+  oreja(traslacion, 0.09, 0.15, radioE+0.1, 0.0);
 
 }
 

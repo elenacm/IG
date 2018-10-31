@@ -133,9 +133,12 @@ void Escena::dibujar_objeto_actual()
           else esfera->draw(false, modo_dibujado);
         break;
       case 7:
-        if( objJerarquico != nullptr)
-          if(modo_actual == 3) objJerarquico->draw(Chess, false) ;
-          else objJerarquico->draw(Point, true);
+        if( objJerarquico != nullptr){
+          bool diferido = false;
+          if(modo_dibujado == 1) diferido = true;
+          if(modo_actual == 3) objJerarquico->draw(Chess, diferido) ;
+          else objJerarquico->draw(Point, diferido);
+        }
         break;
       default:
          cout << "draw_object: el número de objeto actual (" << objeto_actual << ") es incorrecto." << endl ;

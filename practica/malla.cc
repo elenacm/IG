@@ -75,6 +75,11 @@ void ObjMallaIndexada::draw_ModoDiferido(bool ajedrez)
   if(id_vbo_tri == 0) id_vbo_tri = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, sizeof(int)*3*triangulos.size(), triangulos.data());
 
     glBindBuffer( GL_ARRAY_BUFFER, id_vbo_ver ); // activar VBO de vértices
+
+    glEnableClientState(GL_COLOR_ARRAY);
+
+    glColorPointer(3, GL_FLOAT, 0, color.data());
+
     glVertexPointer( 3, GL_FLOAT, 0, 0 );
     // especifica formato y offset (=0)
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
@@ -84,13 +89,24 @@ void ObjMallaIndexada::draw_ModoDiferido(bool ajedrez)
     // visualizar triángulos con glDrawElements (puntero a tabla == 0)
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri );// activar VBO de triángulos
 
-    glColor3f(0.0, 0.0, 0.0);
-    glDrawElements( GL_TRIANGLES, 3*triangulos.size(), GL_UNSIGNED_INT, 0 ) ;
+    //glColor3f(0.0, 0.0, 0.0);
+    //glDrawElements( GL_TRIANGLES, 3*triangulos.size(), GL_UNSIGNED_INT, 0 ) ;
+
+    glDrawElements(GL_TRIANGLES, triangulos_pares.size()*3, GL_UNSIGNED_INT, triangulos_pares.data());
+
+
+    if(ajedrez){
+      glColorPointer(3, GL_FLOAT, 0, color_otro.data());
+    }
+
+    glDrawElements(GL_TRIANGLES, triangulos_impares.size()*3, GL_UNSIGNED_INT, triangulos_impares.data());
 
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
     // desactivar VBO de triángulos
     // desactivar uso de array de vértices
     glDisableClientState( GL_VERTEX_ARRAY );
+
+    glDisableClientState(GL_COLOR_ARRAY);
 }
 
 GLuint ObjMallaIndexada::CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram )
