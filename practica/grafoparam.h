@@ -12,7 +12,7 @@
 
 #include "malla.h" // añadir .h de cualquier objetos malla indexada usados....
 
-constexpr int num_parametros = 5 ; // número de parámetros o grados de libertad
+constexpr int num_parametros = 5; // número de parámetros o grados de libertad
                                    // de este modelo
 
 class GrafoParam
@@ -56,7 +56,7 @@ class GrafoParam
    // parámetros de la llamada actual (o última) a 'draw'
    ModoVis modo_vis ;      // modo de visualización
    bool    usar_diferido ; // modo de envío (true -> diferido, false -> inmediato)
-
+   bool Modo_vis;
 
    // valores efectivos de los parámetros (angulos, distancias, factores de
    // escala, etc.....) calculados a partir de los valores no acotados
@@ -65,7 +65,8 @@ class GrafoParam
          ag_rotacion_1,  // ángulo en grados de rotación (1)
          altura_2,       // altura de la segunda columna
          ag_rotacion_2,  // ángulo en grados de rotación (2)
-         ag_rotacion_3 ; // ángulo en grados de rotación (3)
+         ag_rotacion_3,  // ángulo en grados de rotación (3)
+         ag_rotacion_4;  // ángulo en grados de rotación (4)
 
 } ;
 

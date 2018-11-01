@@ -34,22 +34,8 @@ void ObjMallaIndexada::draw_ModoInmediato(bool ajedrez)
   glVertexPointer(3, GL_FLOAT, 0, vertices.data());
   //visualizar indicando el tipo de primitiva, el número y tipo
   //de índices, y la dirección de la tabla de índices
-  /*if(ajedrez){
-    for(int i = 0; i < triangulos.size(); i++){
-      if(i%2 == 0)
-        glColor3f(0.0, 1.0, 0.0);
-      else
-        glColor3f(0.0, 0.0, 1.0);
 
-      glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, triangulos.data()+i);
-    }
-  }
-  else{
-    glColor3f(0.0, 0.0, 0.0);
-    glDrawElements(GL_TRIANGLES, triangulos.size()*3, GL_UNSIGNED_INT, triangulos.data());
-  }*/
   glDrawElements(GL_TRIANGLES, triangulos_pares.size()*3, GL_UNSIGNED_INT, triangulos_pares.data());
-
 
   if(ajedrez){
     glColorPointer(3, GL_FLOAT, 0, color_otro.data());
@@ -179,7 +165,7 @@ Cubo::Cubo()
    }
 
    for(int i = 0; i < vertices.size(); i++){
-     color.push_back({0.0, 0.1, 0.0});
+     color.push_back({0.0, 0.0, 0.0});
      color_otro.push_back({0.0, 0.0, 1.0});
    }
  }
@@ -212,7 +198,7 @@ Tetraedro::Tetraedro(){
   }
 
   for(int i = 0; i < vertices.size(); i++){
-    color.push_back({0.0, 0.1, 0.0});
+    color.push_back({0.0, 0.0, 0.0});
     color_otro.push_back({0.0, 0.0, 1.0});
   }
 }
@@ -235,8 +221,8 @@ ObjPLY::ObjPLY( const std::string & nombre_archivo )
    }
 
    for(int i = 0; i < vertices.size(); i++){
-     color_otro.push_back({0.0, 0.1, 0.0});
-     color.push_back({0.0, 0.0, 1.0});
+     color_otro.push_back({0.0, 0.0, 1.0});
+     color.push_back({0.0, 0.0, 0.0});
    }
 }
 
@@ -355,8 +341,8 @@ void ObjRevolucion::crearMalla( const std::vector<Tupla3f> & perfil_original, co
     }
 
     for(int i = 0; i < vertices.size(); i++){
-      color_otro.push_back({0.0, 0.1, 0.0});
-      color.push_back({0.0, 0.0, 1.0});
+      color_otro.push_back({0.0, 0.0, 1.0});
+      color.push_back({0.0, 0.0, 0.0});
     }
 
 }
@@ -366,7 +352,7 @@ Cilindro::Cilindro(const int num_vert_perfil, const int num_instancias_perf){
   std::vector<Tupla3f> perfil;
 
   for(int i = 0; i < num_vert_perfil; i++){
-    perfil.push_back({1.0, 0.0 + (i+1)/num_vert_perfil, 0.0});
+    perfil.push_back({1.0, (float)(0.0 + (i+1)/num_vert_perfil), 0.0});
   }
 
   crearMalla(perfil, num_instancias_perf, false, false);

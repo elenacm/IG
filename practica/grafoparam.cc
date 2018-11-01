@@ -13,11 +13,12 @@
 // -----------------------------------------------------------------------------
 // constructor: crea mallas indexadas en los nodos terminales del grafo
 
-GrafoParam::GrafoParam()
-{
+GrafoParam::GrafoParam(){
+
    cilindro = new Cilindro( 4, 16 );
    cubo     = new Cubo();
    esfera = new Esfera(50, 10);
+
 }
 // -----------------------------------------------------------------------------
 // actualizar valor efectivo de un parámetro (a partir de su valor no acotado)
@@ -31,23 +32,22 @@ void GrafoParam::actualizarValorEfe( const unsigned iparam, const float valor_na
 
    constexpr float vp = 2.5 ;
 
-   switch( iparam )
-   {
+   switch( iparam ){
      case 0:
         // ángulo en grados de rotacion 1 (pierna izquierda)
         // oscila entre -45 y 30 grados, a 1.5 oscilaciones por segundo
         // (inicialmente es -7.5 grados)
-        ag_rotacion_1 = -7.5 + 37.5*sin( 1.5*(2.0*M_PI*valor_na) );
+        ag_rotacion_1 = 37.5*sin( 1.5*(2.0*M_PI*valor_na) );
      break;
      case 1:
        // ángulo en grados de rotacion 2 (pierna derecha)
        // oscila entre -45 y 30 grados, a 1.5 oscilaciones por segundo
        // (inicialmente es -7.5 grados)
-       ag_rotacion_2 = -7.5 + 37.5*-sin( 1.5*(2.0*M_PI*valor_na) );
+       ag_rotacion_2 = 37.5*-sin( 1.5*(2.0*M_PI*valor_na) );
      case 2:
        // angulo en grados de rotacion 1 (cabeza)
        // crece linealmente a 150 grados por segundo, inicialmente es 20 grados
-       ag_rotacion_3 = 20.0 + 150.0*valor_na ;
+       ag_rotacion_3 = 150.0*valor_na ;
      break ;
      case 3:
        //cabeza
@@ -56,9 +56,8 @@ void GrafoParam::actualizarValorEfe( const unsigned iparam, const float valor_na
        altura_1 = 0.1*sin( 0.5*(2.0*M_PI*valor_na) );
      break ;
      case 4:
-       // altura 2: oscila entre 1.1 y 1.9, a 0.8 oscilaciones por segundo
-         altura_2 = 1.5 + 0.4*sin( 0.8*(2.0*M_PI*valor_na) );
-     break ;
+       // rotacion de cuerpo y brazos
+       ag_rotacion_4 = 37.5*sin( 1.5*(2.0*M_PI*valor_na) );
    }
 }
 
@@ -78,6 +77,9 @@ void GrafoParam::draw( const ModoVis p_modo_vis, const bool p_usar_diferido )
 
    modo_vis      = p_modo_vis ;
    usar_diferido = p_usar_diferido ;
+
+   Modo_vis = false;
+   if(modo_vis == Chess) Modo_vis = true;
 
    // dibujar objetos
 
@@ -117,7 +119,26 @@ void GrafoParam::draw( const ModoVis p_modo_vis, const bool p_usar_diferido )
     glPushMatrix();
       //glTranslatef(0.0, 0.5, 0.0);
       //cuerpo + piernas
-      cuerpo(-0.3, 0.7);
+      glPushMatrix();
+        glRotatef(ag_rotacion_4, 0.0, 1.0, 0.0);
+        cuerpo(-0.3, 0.7);
+        //brazo derecho
+        glPushMatrix();
+          glTranslatef(0.25, 0.0, 0.0);
+          glRotatef(45, 0.0, 0.0, 1.0);
+          glTranslatef(0.0, -0.2, 0.0);
+          articulacion(0.075);
+          extremidad(ag_rotacion_1, 0.075, 0.075, 0.3);
+        glPopMatrix();
+        //brazo izquierdo
+        glPushMatrix();
+          glTranslatef(-0.25, 0.0, 0.0);
+          glRotatef(-45, 0.0, 0.0, 1.0);
+          glTranslatef(0.0, -0.2, 0.0);
+          articulacion(0.075);
+          extremidad(ag_rotacion_2, 0.075, 0.075, 0.3);
+        glPopMatrix();
+      glPopMatrix();
       //pierna izquierda
       glPushMatrix();
         glTranslatef(-0.2, -0.85, 0.0);
@@ -127,22 +148,6 @@ void GrafoParam::draw( const ModoVis p_modo_vis, const bool p_usar_diferido )
       //pierna derecha
       glPushMatrix();
         glTranslatef(0.2, -0.85, 0.0);
-        articulacion(0.075);
-        extremidad(ag_rotacion_2, 0.075, 0.075, 0.3);
-      glPopMatrix();
-      //brazo derecho
-      glPushMatrix();
-        glTranslatef(0.25, 0.0, 0.0);
-        glRotatef(45, 0.0, 0.0, 1.0);
-        glTranslatef(0.0, -0.2, 0.0);
-        articulacion(0.075);
-        extremidad(ag_rotacion_1, 0.075, 0.075, 0.3);
-      glPopMatrix();
-      //brazo izquierdo
-      glPushMatrix();
-        glTranslatef(-0.25, 0.0, 0.0);
-        glRotatef(-45, 0.0, 0.0, 1.0);
-        glTranslatef(0.0, -0.2, 0.0);
         articulacion(0.075);
         extremidad(ag_rotacion_2, 0.075, 0.075, 0.3);
       glPopMatrix();
@@ -162,11 +167,11 @@ void GrafoParam::extremidad(const float ag_rotacion, const float radioE, const f
   glPushMatrix();
     glTranslatef(0.0, -radioE, 0.0);
     glScalef(radioE, radioE, radioE);
-    esfera->draw(modo_vis, usar_diferido);
+    esfera->draw(Modo_vis, usar_diferido);
   glPopMatrix();
   glPushMatrix();
     glScalef(radioC, alturaC, radioC);
-    cilindro->draw(modo_vis, usar_diferido);
+    cilindro->draw(Modo_vis, usar_diferido);
   glPopMatrix();
 
 }
@@ -179,7 +184,7 @@ void GrafoParam::oreja(const float traslacion, const float radioE, const float T
     glTranslatef(Tx, Ty+traslacion, Tz);
     glTranslatef(0.0, radioE, 0.0);
     glScalef(radioE, radioE, radioE);
-    esfera->draw(modo_vis, usar_diferido);
+    esfera->draw(Modo_vis, usar_diferido);
   glPopMatrix();
 
 }
@@ -191,12 +196,12 @@ void GrafoParam::cabeza(const float traslacion, const float radioE, const float 
   glPushMatrix();
     glTranslatef(0.0, -alturaC*0.7 + traslacion, 0.0);
     glScalef(radioC, alturaC, radioC);
-    cilindro->draw(modo_vis, usar_diferido);
+    cilindro->draw(Modo_vis, usar_diferido);
   glPopMatrix();
   glPushMatrix();
     glTranslatef(0.0, -radioE+alturaC-0.05 + traslacion, 0.0);
     glScalef(radioE, radioE, radioE);
-    esfera->draw(modo_vis, usar_diferido);
+    esfera->draw(Modo_vis, usar_diferido);
   glPopMatrix();
   //oreja izquierda
   oreja(traslacion, 0.09, -0.15, radioE+0.1, 0.0);
@@ -212,7 +217,7 @@ void GrafoParam::cuerpo(const float radioC, const float alturaC){
   glPushMatrix();
     glTranslatef(0.0, -alturaC, 0.0);
     glScalef(radioC, alturaC, radioC);
-    cilindro->draw(modo_vis, usar_diferido);
+    cilindro->draw(Modo_vis, usar_diferido);
   glPopMatrix();
 
 }
@@ -224,7 +229,7 @@ void GrafoParam::articulacion(const float radioE){
   glPushMatrix();
     glTranslatef(0.0, radioE, 0.0);
     glScalef(radioE, radioE, radioE);
-    esfera->draw(modo_vis, usar_diferido);
+    esfera->draw(Modo_vis, usar_diferido);
   glPopMatrix();
 
 }
