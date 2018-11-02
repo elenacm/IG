@@ -8,7 +8,7 @@
 #ifndef _EJES_H
 #define _EJES_H
 
-class Ejes {
+class Ejes{
 
 private:
 	float axisSize;
@@ -17,12 +17,13 @@ private:
 
 public:
 	Ejes();
-	void changeAxisSize( float newSize );
+	void changeAxisSize(float newSize);
 	void draw();
 
 private:
 	void createArrayData();
 	void drawBeginEnd();
 	void drawArray();
+
 };
 #endif

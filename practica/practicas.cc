@@ -5,7 +5,6 @@
 //
 // GPL
 //**************************************************************************
-
 /*
  * Prácticas IG Grupo A
  *
@@ -25,8 +24,7 @@ Escena *escena = nullptr ;
 //periódicamente con las animaciones activadas
 void funcion_desocupado(){
 
-	if(escena != nullptr)
-		escena->mgeDesocupado();
+	if(escena != nullptr) escena->mgeDesocupado();
 
 }
 

@@ -6,6 +6,12 @@
 // -- declaraciones de clase para el objeto jerárquico de la práctica 3
 //
 // #############################################################################
+/*
+ * Prácticas IG Grupo A
+ *
+ * Elena Cantero Molina   DNI:45744912M
+ *
+ */
 
 #ifndef JERARQUICO_H_INCLUDED
 #define JERARQUICO_H_INCLUDED
@@ -15,29 +21,27 @@
 #include "grafoparam.h"
 
 // tipo para registrar instantes de tiempo
-typedef std::chrono::time_point<std::chrono::steady_clock> Instante ;
-
+typedef std::chrono::time_point<std::chrono::steady_clock> Instante;
 // tipo para duraciones en segundos (como números 'float', con parte fraccionaria)
-typedef std::chrono::duration<float,std::ratio<1,1>> Duracion_s ;
+typedef std::chrono::duration<float,std::ratio<1,1>> Duracion_s;
 
+class ObjJerarquico{
 
-class ObjJerarquico
-{
    public:
       // inicialización: crear mallas indexadas, inicialización de parámetros
       ObjJerarquico();
 
       // visualizar el objeto, usando los valores actuales de los parámetros
-      void draw( const ModoVis modo_vis, const bool usar_diferido );
+      void draw(const ModoVis modo_vis, const bool usar_diferido);
 
       // incrementa el valor del parámetro o grado de libertad actual
       void incrementaParamAct();
 
       // decrementa el valor del parámetro o grado de libertad actual
-      void decrementaParamAct() ;
+      void decrementaParamAct();
 
       // activar el siguiente parámetro o grado de libertad actual
-      void siguienteParametro() ;
+      void siguienteParametro();
 
       // acelerar las animaciones e incrementar el delta usado al
       // increm./decrem. un parámetro (incrementa 'delta_valores_na')
@@ -63,21 +67,21 @@ class ObjJerarquico
 
    private:
       // puntero al objeto con el grafo de escena
-      GrafoParam * objparam = nullptr ;
+      GrafoParam * objparam = nullptr;
 
       // instante de ultima actualización de los parámetros, o bien de
       // la última llamada a 'inicio_animaciones'
-      Instante ultima_actu  ;
+      Instante ultima_actu;
 
       // vector de valores lineales de los parámetros
-      std::vector<float> valores_na ;
+      std::vector<float> valores_na;
 
       // índice del parámetro o grado de libertad actual
-      unsigned i_param_act = 0 ;
+      unsigned i_param_act = 0;
 
       // delta de los valores no acotados para animaciones e incremento/decremento
-      float delta_valores_na = 1.0 ;
+      float delta_valores_na = 1.0;
 
-} ;
+};
 
 #endif
