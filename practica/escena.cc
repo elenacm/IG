@@ -128,7 +128,7 @@ void Escena::dibujar_objeto_actual(){
           else esfera->draw(false, modo_dibujado);
         }
       break;
-      case 7:
+      case 7: //Objeto Jerárquico
         if(objJerarquico != nullptr){
           bool diferido = false;
           if(modo_dibujado == 1) diferido = true;
@@ -170,7 +170,7 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y){
    using namespace std;
    cout << "Tecla pulsada: '" << tecla << "'" << endl;
 
-   if(tecla != 'z') toupper(tecla);
+   if(tecla != 'z') tecla = toupper(tecla);
 
    switch(tecla){
       case 'Q': //salir

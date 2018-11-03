@@ -252,5 +252,5 @@ void GrafoParam::columna(const float altura, const float ag_rotacion, const floa
       glRotatef( ag_rotacion, 0.0, 1.0, 0.0 );
       cubo->draw( modo_vis, usar_diferido );
    glPopMatrix();
-   
+
 }

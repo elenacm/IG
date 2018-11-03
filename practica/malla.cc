@@ -313,11 +313,6 @@ void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, con
       triangulos_impares.push_back(triangulos[i]);
   }
 
-  for(int i = 0; i < vertices.size(); i++){
-    color.push_back({0.0, 0.0, 0.0});
-    color_otro.push_back({0.9, 0.0, 1.0});
-  }
-
 }
 
 Cilindro::Cilindro(const int num_vert_perfil, const int num_instancias_perf){
@@ -329,6 +324,12 @@ Cilindro::Cilindro(const int num_vert_perfil, const int num_instancias_perf){
   }
 
   crearMalla(perfil, num_instancias_perf, false, false);
+
+  for(int i = 0; i < vertices.size(); i++){
+    color.push_back({0.7, 0.5, 0.0});
+    color_otro.push_back({0.9, 0.0, 1.0});
+  }
+
 }
 
 Cono::Cono(const int num_vert_perfil, const int num_instancias_perf){
@@ -340,6 +341,12 @@ Cono::Cono(const int num_vert_perfil, const int num_instancias_perf){
   }
 
   crearMalla(perfil, num_instancias_perf, true, false);
+
+  for(int i = 0; i < vertices.size(); i++){
+    color.push_back({0.0, 0.0, 0.0});
+    color_otro.push_back({0.9, 0.0, 1.0});
+  }
+
 }
 
 Esfera::Esfera(const int num_vert_perfil, const int num_instancias_perf){
@@ -352,4 +359,9 @@ Esfera::Esfera(const int num_vert_perfil, const int num_instancias_perf){
   }
 
   crearMalla(perfil, num_instancias_perf, false, true);
+
+  for(int i = 0; i < vertices.size(); i++){
+    color.push_back({1.0, 0.5, 0.5});
+    color_otro.push_back({0.9, 0.0, 1.0});
+  }
 }
