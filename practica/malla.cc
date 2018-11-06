@@ -214,14 +214,19 @@ ObjPLY::ObjPLY(const std::string & nombre_archivo){
 // *****************************************************************************
 // objeto de revolución obtenido a partir de un perfil (en un PLY)
 
-ObjRevolucion::ObjRevolucion(const std::string & nombre_ply_perfil){
+ObjRevolucion::ObjRevolucion(const std::string & nombre_ply_perfil, bool tapaArriba, bool tapaAbajo){
 
    ply::read_vertices(nombre_ply_perfil, vertices);
-   crearMalla(vertices, 50, false, false);
+   crearMalla(vertices, 50, false, false, tapaArriba, tapaAbajo);
+
+   for(int i = 0; i < vertices.size(); i++){
+     color.push_back({0.0, 0.0, 0.0});
+     color_otro.push_back({0.9, 0.0, 1.0});
+   }
 
 }
 
-void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perf, bool cono, bool esfera){
+void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perf, bool cono, bool esfera, bool tapaArriba, bool tapaAbajo){
   Tupla3f v,v1;
   int a, b;
   Tupla3i t;
@@ -265,45 +270,53 @@ void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, con
     }
   }
 
-  if(cono){
-    v = {0.0, perfil_original[0][1], 0.0};
-    vertices.push_back(v); //polo sur
+  if(cono || esfera){
 
-    v = {0.0, 1.0, 0.0};
-    vertices.push_back(v);
-  }
-  else if(esfera){
-    v = {0.0, -1.0, 0.0};
-    vertices.push_back(v); //polo sur
+    if(cono){
+      v = {0.0, perfil_original[0][1], 0.0};
+      vertices.push_back(v); //polo sur
+    }
+    else{
+      v = {0.0, -1.0, 0.0};
+      vertices.push_back(v); //polo sur
+    }
 
     v = {0.0, 1.0, 0.0};
     vertices.push_back(v);
   }
   else{
     //HACER TAPAS ARRIBA y ABAJO
-    v = {0, perfil_original[0][1], 0};
-    vertices.push_back(v); //polo sur
+    if(tapaAbajo){
+      v = {0, perfil_original[0][1], 0};
+      vertices.push_back(v); //polo sur
+    }
 
-    v = {0, perfil_original[M-1][1], 0};
-    vertices.push_back(v); //polo norte
+    if(tapaArriba){
+      v = {0, perfil_original[M-1][1], 0};
+      vertices.push_back(v); //polo norte
+    }
   }
 
-  for(int i = 0; i < N; i++){
-    //tapa inferior
-    t[2] = M*i;
-    t[1] = M*((i+1)%N);
-    t[0] = vertices.size()-2;
+  if(tapaAbajo){
+    for(int i = 0; i < N; i++){
+      //tapa inferior
+      t[2] = M*i;
+      t[1] = M*((i+1)%N);
+      t[0] = vertices.size()-2;
 
-    triangulos.push_back(t);
+      triangulos.push_back(t);
+    }
   }
 
-  for(int i = 0; i < N; i++){
-    //tapa superior
-    t[0] = M*(i+1) - 1;
-    t[1] = M*(((i+1)%N)+1)-1;
-    t[2] = vertices.size()-1;
+  if(tapaArriba){
+    for(int i = 0; i < N; i++){
+      //tapa superior
+      t[0] = M*(i+1) - 1;
+      t[1] = M*(((i+1)%N)+1)-1;
+      t[2] = vertices.size()-1;
 
-    triangulos.push_back(t);
+      triangulos.push_back(t);
+    }
   }
 
   for(int i = 0; i < triangulos.size(); i++){
@@ -315,7 +328,7 @@ void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, con
 
 }
 
-Cilindro::Cilindro(const int num_vert_perfil, const int num_instancias_perf){
+Cilindro::Cilindro(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo){
   std::cout << "Creando cilinidro..." << std::endl;
   std::vector<Tupla3f> perfil;
 
@@ -323,16 +336,16 @@ Cilindro::Cilindro(const int num_vert_perfil, const int num_instancias_perf){
     perfil.push_back({1.0, (float)(0.0 + (i+1)/num_vert_perfil), 0.0});
   }
 
-  crearMalla(perfil, num_instancias_perf, false, false);
+  crearMalla(perfil, num_instancias_perf, false, false, tapaArriba, tapaAbajo);
 
   for(int i = 0; i < vertices.size(); i++){
     color.push_back({0.7, 0.5, 0.0});
-    color_otro.push_back({0.9, 0.0, 1.0});
+    color_otro.push_back({0.0, 0.0, 0.0});
   }
 
 }
 
-Cono::Cono(const int num_vert_perfil, const int num_instancias_perf){
+Cono::Cono(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo){
   std::cout << "Creando cono..." << std::endl;
   std::vector<Tupla3f> perfil;
 
@@ -340,7 +353,7 @@ Cono::Cono(const int num_vert_perfil, const int num_instancias_perf){
     perfil.push_back({(float)(1.0 - i/num_vert_perfil), (float)(0.0 + i/num_vert_perfil), 0.0});
   }
 
-  crearMalla(perfil, num_instancias_perf, true, false);
+  crearMalla(perfil, num_instancias_perf, true, false, tapaArriba, tapaAbajo);
 
   for(int i = 0; i < vertices.size(); i++){
     color.push_back({0.0, 0.0, 0.0});
@@ -349,7 +362,7 @@ Cono::Cono(const int num_vert_perfil, const int num_instancias_perf){
 
 }
 
-Esfera::Esfera(const int num_vert_perfil, const int num_instancias_perf){
+Esfera::Esfera(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo){
   std::cout << "Creando esfera..." << std::endl;
   std::vector<Tupla3f> perfil;
 
@@ -358,10 +371,10 @@ Esfera::Esfera(const int num_vert_perfil, const int num_instancias_perf){
     perfil.push_back({(float)(0.0 + sqrt(1-(y*y))), y, 0.0});
   }
 
-  crearMalla(perfil, num_instancias_perf, false, true);
+  crearMalla(perfil, num_instancias_perf, false, true, tapaArriba, tapaAbajo);
 
   for(int i = 0; i < vertices.size(); i++){
     color.push_back({1.0, 0.5, 0.5});
-    color_otro.push_back({0.9, 0.0, 1.0});
+    color_otro.push_back({0.0, 0.0, 0.0});
   }
 }

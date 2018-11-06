@@ -97,10 +97,10 @@ class ObjRevolucion : public ObjMallaIndexada{
 
    public:
      ObjRevolucion() {}
-     ObjRevolucion(const std::string & nombre_ply_perfil);
+     ObjRevolucion(const std::string & nombre_ply_perfil, bool tapaArriba, bool tapaAbajo);
 
    protected:
-     void crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perf, bool cono, bool esfera);
+     void crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perf, bool cono, bool esfera, bool tapaArriba, bool tapaAbajo);
 
 } ;
 
@@ -110,7 +110,7 @@ class ObjRevolucion : public ObjMallaIndexada{
 class Cilindro : public ObjRevolucion{
 
    public:
-     Cilindro(const int num_vert_perfil, const int num_instancias_perf);
+     Cilindro(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
 
 };
 
@@ -120,7 +120,7 @@ class Cilindro : public ObjRevolucion{
 class Cono : public ObjRevolucion{
 
    public:
-     Cono(const int num_vert_perfil, const int num_instancias_perf);
+     Cono(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
 
 };
 
@@ -130,7 +130,7 @@ class Cono : public ObjRevolucion{
 class Esfera : public ObjRevolucion{
 
    public:
-     Esfera(const int num_vert_perfil, const int num_instancias_perf);
+     Esfera(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
 
 };
 

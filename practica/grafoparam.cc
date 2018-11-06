@@ -15,9 +15,9 @@
 
 GrafoParam::GrafoParam(){
 
-   cilindro = new Cilindro( 4, 16 );
+   cilindro = new Cilindro(4, 16, true, true);
    cubo     = new Cubo();
-   esfera = new Esfera(50, 10);
+   esfera = new Esfera(50, 10, true, true);
 
 }
 

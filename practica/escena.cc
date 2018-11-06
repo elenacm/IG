@@ -27,12 +27,12 @@ Escena::Escena(){
     cubo = new Cubo();
     tetraedro = new Tetraedro();
 
-    cono = new Cono(5, 20);
-    cilindro = new Cilindro(2, 100);
-    esfera = new Esfera(100, 100);
+    cono = new Cono(5, 20, true, true);
+    cilindro = new Cilindro(2, 100, true, true);
+    esfera = new Esfera(100, 100, true, true);
 
     objetoPLY = new ObjPLY("plys/ant.ply");
-    objetoRev = new ObjRevolucion("plys/peon.ply");
+    objetoRev = new ObjRevolucion("plys/peon.ply", true, true);
 
     objJerarquico = new ObjJerarquico();
 
@@ -79,7 +79,7 @@ void Escena::dibujar_objeto_actual(){
        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //cara delantera y trasera con puntos
        break;
      default:
-       cout <<"No se puede dibujar" << endl;
+       cout << "No se puede dibujar" << endl;
        break;
    }
 
