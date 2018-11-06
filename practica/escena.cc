@@ -135,8 +135,8 @@ void Escena::dibujar_objeto_actual(){
           bool diferido = false;
           if(modo_dibujado == 1) diferido = true;
 
-          if(modo_actual == 3) objJerarquico->draw(Chess, diferido) ;
-          else objJerarquico->draw(Point, diferido);
+          if(modo_actual == 3) objJerarquico->draw(modo_actual, diferido) ;
+          else objJerarquico->draw(modo_actual, diferido);
         }
       break;
       case 8: //Objeto Nuevo

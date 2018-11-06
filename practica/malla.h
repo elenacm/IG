@@ -22,7 +22,7 @@
 // clase para objetos 3D (mallas indexadas)
 // *****************************************************************************
 
-enum ModoVis {Line = 0, Fill = 1, Point = 2, Chess = 3};
+typedef int ModoVis;
 
 class ObjMallaIndexada{
 

@@ -77,7 +77,7 @@ void GrafoParam::draw(const ModoVis p_modo_vis, const bool p_usar_diferido){
    usar_diferido = p_usar_diferido;
 
    Modo_vis = false;
-   if(modo_vis == Chess) Modo_vis = true;
+   if(modo_vis == 3) Modo_vis = true;
 
    // dibujar objetos
    constexpr float
