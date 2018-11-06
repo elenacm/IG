@@ -134,4 +134,11 @@ class Esfera : public ObjRevolucion{
 
 };
 
+class ObjetoNuevo : public ObjRevolucion{
+
+   public:
+     ObjetoNuevo(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
+
+};
+
 #endif

@@ -36,8 +36,10 @@ Escena::Escena(){
 
     objJerarquico = new ObjJerarquico();
 
+    objetoNuevo = new ObjetoNuevo(100, 100, true, true);
+
     num_modos = 4;
-    num_objetos = 8; // se usa al pulsar la tecla 'O' (rotar objeto actual)
+    num_objetos = 9; // se usa al pulsar la tecla 'O' (rotar objeto actual)
 
 }
 
@@ -135,6 +137,12 @@ void Escena::dibujar_objeto_actual(){
 
           if(modo_actual == 3) objJerarquico->draw(Chess, diferido) ;
           else objJerarquico->draw(Point, diferido);
+        }
+      break;
+      case 8: //Objeto Nuevo
+        if(objetoNuevo != nullptr){
+          if(modo_actual == 3) objetoNuevo->draw(true, modo_dibujado) ;
+          else objetoNuevo->draw(false, modo_dibujado);
         }
       break;
       default:

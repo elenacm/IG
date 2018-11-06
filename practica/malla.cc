@@ -226,6 +226,34 @@ ObjRevolucion::ObjRevolucion(const std::string & nombre_ply_perfil, bool tapaArr
 
 }
 
+//******************************************************************************
+
+ObjetoNuevo::ObjetoNuevo(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo){
+  std::cout << "Creando nuevo objeto..." << std::endl;
+  std::vector<Tupla3f> perfil;
+
+  for(float i = 1.0; i < num_vert_perfil; i+=1.0){
+    if(i >= num_vert_perfil/2){
+      float y = -1*1.0 + 2*i/num_vert_perfil;
+      perfil.push_back({(float)(0.4*(0.0 + sqrt(1-(y*y)))), -y*0.4, 0.0*0.4});
+    }
+    else{
+      float y = -1*1.0 + 2*i/num_vert_perfil;
+      perfil.push_back({(float)(0.5*(0.0 + sqrt(1-(y*y)))), y*0.5, 0.0*0.5});
+    }
+  }
+
+  crearMalla(perfil, num_instancias_perf, false, false, tapaArriba, tapaAbajo);
+
+  for(int i = 0; i < vertices.size(); i++){
+    color.push_back({1.0, 0.5, 0.5});
+    color_otro.push_back({0.0, 0.0, 0.0});
+  }
+}
+
+
+//******************************************************************************
+
 void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perf, bool cono, bool esfera, bool tapaArriba, bool tapaAbajo){
   Tupla3f v,v1;
   int a, b;
@@ -245,6 +273,17 @@ void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, con
       v1[0] = cos(rotacion)*v[0] + sin(rotacion)*v[2];
       v1[1] = v[1];
       v1[2] = cos(rotacion)*v[2] - sin(rotacion)*v[0];
+
+      /*x
+      v1[0] = v[0];
+      v1[1] = cos(rotacion)*v[1] - sin(rotacion)*v[2];
+      v1[2] = cos(rotacion)*v[2] + sin(rotacion)*v[1];
+      */
+      /*z
+      v1[0] = cos(rotacion)*v[0] - sin(rotacion)*v[1];
+      v1[1] = cos(rotacion)*v[1] + sin(rotacion)*v[0];
+      v1[2] = v[2];
+      */
 
       vertices.push_back(v1);
     }

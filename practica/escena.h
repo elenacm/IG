@@ -55,6 +55,8 @@ class Escena{
 
      ObjJerarquico * objJerarquico = nullptr;
 
+     ObjetoNuevo * objetoNuevo = nullptr;
+
    public:
 
      Escena();
