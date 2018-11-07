@@ -67,78 +67,67 @@ class ObjMallaIndexada{
 // (tiene 8 vertices y 6 caras)
 
 class Cubo : public ObjMallaIndexada{
-
    public:
      Cubo();
-
 };
 
-class Tetraedro : public ObjMallaIndexada{
+//******************************************************************************
+// Tetraedro
 
+class Tetraedro : public ObjMallaIndexada{
    public:
      Tetraedro();
-
 };
 
 // *****************************************************************************
 // objeto leído de un archivo PLY
 
 class ObjPLY : public ObjMallaIndexada{
-
    public:
       ObjPLY(const std::string & nombre_archivo);
-
 };
 
 // *****************************************************************************
 // objeto de revolución obtenido a partir de un perfil (en un PLY)
 
 class ObjRevolucion : public ObjMallaIndexada{
-
    public:
      ObjRevolucion() {}
      ObjRevolucion(const std::string & nombre_ply_perfil, bool tapaArriba, bool tapaAbajo);
 
    protected:
      void crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perf, bool cono, bool esfera, bool tapaArriba, bool tapaAbajo);
-
 } ;
 
 //******************************************************************************
 // Cilindro a partir de un objeto de revolucion
 
 class Cilindro : public ObjRevolucion{
-
    public:
      Cilindro(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
-
 };
 
 //******************************************************************************
 // Cono a partir de un objeto de revolucion
 
 class Cono : public ObjRevolucion{
-
    public:
      Cono(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
-
 };
 
 //******************************************************************************
 // Esfera a partir de un objeto de revolucion
 
 class Esfera : public ObjRevolucion{
-
    public:
      Esfera(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
-
 };
 
-class ObjetoNuevo : public ObjRevolucion{
+/*class ObjetoNuevo : public ObjRevolucion{
 
    public:
      ObjetoNuevo(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
 
-};
+};*/
 
 #endif

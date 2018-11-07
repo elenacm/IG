@@ -36,10 +36,10 @@ Escena::Escena(){
 
     objJerarquico = new ObjJerarquico();
 
-    objetoNuevo = new ObjetoNuevo(100, 100, true, true);
+//    objetoNuevo = new ObjetoNuevo(100, 100, true, true);
 
     num_modos = 4;
-    num_objetos = 9; // se usa al pulsar la tecla 'O' (rotar objeto actual)
+    num_objetos = 8; // se usa al pulsar la tecla 'O' (rotar objeto actual)
 
 }
 
@@ -78,7 +78,7 @@ void Escena::dibujar_objeto_actual(){
        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //cara delantera y trasera rellenas
        break;
      case 3:
-       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //cara delantera y trasera con puntos
+       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //cara delantera y trasera rellenas para el modo ajedrez
        break;
      default:
        cout << "No se puede dibujar" << endl;
@@ -87,7 +87,7 @@ void Escena::dibujar_objeto_actual(){
 
    //dibujar el objeto actual usando método 'draw' del objeto asociado al
    //valor entero en 'objeto_actual'
-   switch( objeto_actual ){
+   switch(objeto_actual){
       case 0: //Cubo
         if (cubo != nullptr){
           if(modo_actual == 3) cubo->draw(true, modo_dibujado);
@@ -139,17 +139,16 @@ void Escena::dibujar_objeto_actual(){
           else objJerarquico->draw(modo_actual, diferido);
         }
       break;
-      case 8: //Objeto Nuevo
+      /*case 8: //Objeto Nuevo
         if(objetoNuevo != nullptr){
           if(modo_actual == 3) objetoNuevo->draw(true, modo_dibujado) ;
           else objetoNuevo->draw(false, modo_dibujado);
         }
-      break;
+      break;*/
       default:
          cout << "draw_object: el número de objeto actual (" << objeto_actual << ") es incorrecto." << endl ;
       break ;
    }
-
 }
 
 // **************************************************************************
@@ -158,13 +157,11 @@ void Escena::dibujar_objeto_actual(){
 // **************************************************************************
 
 void Escena::dibujar(){
-
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
   glEnable(GL_CULL_FACE);
   ejes.draw();
 	dibujar_objeto_actual();
-
 }
 
 //**************************************************************************
@@ -174,11 +171,10 @@ void Escena::dibujar(){
 //**************************************************************************
 
 bool Escena::teclaPulsada(unsigned char tecla, int x, int y){
-
    using namespace std;
    cout << "Tecla pulsada: '" << tecla << "'" << endl;
 
-   if(tecla != 'z') tecla = toupper(tecla);
+   if(tecla != 'z'){ tecla = toupper(tecla); }
 
    switch(tecla){
       case 'Q': //salir
@@ -223,7 +219,6 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y){
    }
 
    return false;
-
 }
 
 //**************************************************************************
@@ -252,7 +247,6 @@ void Escena::teclaEspecial(int Tecla1, int x, int y){
 	}
 
 	//std::cout << Observer_distance << std::endl;
-
 }
 
 //**************************************************************************
@@ -261,13 +255,11 @@ void Escena::teclaEspecial(int Tecla1, int x, int y){
 //***************************************************************************
 
 void Escena::change_projection(const float ratio_xy){
-
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
    const float wy = 0.84*Front_plane;
    const float wx = ratio_xy*wy;
    glFrustum( -wx, wx, -wy, wy, Front_plane, Back_plane );
-
 }
 
 //**************************************************************************
@@ -275,12 +267,10 @@ void Escena::change_projection(const float ratio_xy){
 //***************************************************************************
 
 void Escena::redimensionar(int newWidth, int newHeight){
-
    Width  = newWidth;
    Height = newHeight;
    change_projection(float(Width)/float(Height));
    glViewport( 0, 0, Width, Height );
-
 }
 
 //**************************************************************************
@@ -288,27 +278,22 @@ void Escena::redimensionar(int newWidth, int newHeight){
 //***************************************************************************
 
 void Escena::change_observer(){
-
    // posicion del observador
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
    glTranslatef( 0.0, 0.0, -Observer_distance );
    glRotatef( Observer_angle_x, 1.0 ,0.0, 0.0 );
    glRotatef( Observer_angle_y, 0.0, 1.0, 0.0 );
-
 }
 
 //Se encarga de actualizar el estado de los parámetros del objeto jerárquico
 void Escena::mgeDesocupado(){
-
   objJerarquico->actualizarEstado();
   glutPostRedisplay();
-
 }
 
 //Se encarga de activar o desactivar las animaciones
 void Escena::conmutarAcciones(){
-
   if(objeto_actual == 7){
     if(!animacion){
       animacion = true;
@@ -323,5 +308,4 @@ void Escena::conmutarAcciones(){
   else{
     std::cout << "Advertencia -> no es el objeto jerarquico" << std::endl;
   }
-
 }

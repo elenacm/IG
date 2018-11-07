@@ -49,17 +49,16 @@ void GrafoParam::actualizarValorEfe(const unsigned iparam, const float valor_na)
        ag_rotacion_3 = 150.0*valor_na ;
      break ;
      case 3:
-       //cabeza y cuello
-       // altura 1: oscila entre 0.7 y 1.3, a 0.5 oscilaciones por segundo
+       // traslacion de cabeza y cuello
+       // altura 1: oscila entre 0.7 y 1.3, a 0.9 oscilaciones por segundo
        altura_1 = 0.1*sin( 0.9*(2.0*M_PI*valor_na) );
      break ;
      case 4:
-       // rotacion de cuerpo y brazos
+       // angulo en grados de rotacion 4 (cuerpo y brazos)
        // oscila entre -45 y 30 grados, a 1.5 oscilaciones por segundo
        ag_rotacion_4 = 37.5*sin( 1.5*(2.0*M_PI*valor_na) );
      break;
    }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -155,7 +154,7 @@ void GrafoParam::draw(const ModoVis p_modo_vis, const bool p_usar_diferido){
 
 //-----------------------------------------------------------
 //dibuja un sub-objeto parametrizado
-//es un pie (esfera) de radio radioE, con un cilindro encima
+//es un pie/mano (esfera) de radio radioE, con un cilindro encima
 //de altura alturaC y radio radioC
 
 void GrafoParam::extremidad(const float ag_rotacion, const float radioE, const float radioC, const float alturaC){
@@ -163,14 +162,15 @@ void GrafoParam::extremidad(const float ag_rotacion, const float radioE, const f
   glRotatef(ag_rotacion, 1.0, 0.0, 0.0);
   glTranslatef(0.0, -alturaC, 0.0);
   glPushMatrix();
+    glScalef(radioC, alturaC, radioC);
+    cilindro->draw(Modo_vis, usar_diferido);
+  glPopMatrix();
+  glPushMatrix();
     glTranslatef(0.0, -radioE, 0.0);
     glScalef(radioE, radioE, radioE);
     esfera->draw(Modo_vis, usar_diferido);
   glPopMatrix();
-  glPushMatrix();
-    glScalef(radioC, alturaC, radioC);
-    cilindro->draw(Modo_vis, usar_diferido);
-  glPopMatrix();
+
 
 }
 

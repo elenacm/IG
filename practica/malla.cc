@@ -77,6 +77,9 @@ void ObjMallaIndexada::draw_ModoDiferido(bool ajedrez){
 
 }
 
+//------------------------------------------------------------------------------
+// Creación de un VBO
+
 GLuint ObjMallaIndexada::CrearVBO(GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram){
 
   GLuint id_vbo;
@@ -228,7 +231,7 @@ ObjRevolucion::ObjRevolucion(const std::string & nombre_ply_perfil, bool tapaArr
 
 //******************************************************************************
 
-ObjetoNuevo::ObjetoNuevo(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo){
+/*ObjetoNuevo::ObjetoNuevo(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo){
   std::cout << "Creando nuevo objeto..." << std::endl;
   std::vector<Tupla3f> perfil;
 
@@ -249,7 +252,7 @@ ObjetoNuevo::ObjetoNuevo(const int num_vert_perfil, const int num_instancias_per
     color.push_back({1.0, 0.5, 0.5});
     color_otro.push_back({0.0, 0.0, 0.0});
   }
-}
+}*/
 
 
 //******************************************************************************
@@ -310,7 +313,6 @@ void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, con
   }
 
   if(cono || esfera){
-
     if(cono){
       v = {0.0, perfil_original[0][1], 0.0};
       vertices.push_back(v); //polo sur
