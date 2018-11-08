@@ -47,13 +47,22 @@ class Escena{
      Cubo * cubo = nullptr; // es importante inicializarlo a 'nullptr'
      Tetraedro * tetraedro = nullptr;
 
+     //Ejercicio 1
+     Piramide * piramide = nullptr;
+
      ObjRevolucion * objetoRev = nullptr;
      ObjRevolucion * cono = nullptr;
      ObjRevolucion * cilindro = nullptr;
      ObjRevolucion * esfera = nullptr;
      ObjPLY * objetoPLY = nullptr;
 
+     //Ejercicio 2
+     ObjetoBarrido * objetoBarrido = nullptr;
+
      ObjJerarquico * objJerarquico = nullptr;
+
+     //Ejercicio 3
+     ObjJerarquico * objJerarquico1 = nullptr;
 
    public:
 
