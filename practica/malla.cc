@@ -187,6 +187,41 @@ Tetraedro::Tetraedro(){
 
 }
 
+//******************************************************************************
+//Ejercicio 1
+//******************************************************************************
+
+Piramide::Piramide(){
+
+  //inicializamos la tabla de vértices
+  vertices = { {0.0, 1.0, 0.0},   //0
+               {-0.5, 0.0, 0.5},  //1
+               {0.0, 0.0, 0.5},   //2
+               {0.0, 0.0, 0.0},  //3
+               {0.5, 0.0, 0.0},  //4
+               {0.5, 0.0, -0.5}, //5
+               {-0.5, 0.0, -0.5} //6
+             };
+
+  //Inicializamos la tabla de caras(triángulos)
+  triangulos = { {0,1,2}, {0,2,3}, {0,3,4}, {0,4,5},
+                  {0,5,6}, {0,6,1}, {1,3,2}, {3,5,4},
+                {3,6,5}, {1,6,3}};
+
+  for(int i = 0; i < triangulos.size(); i++){
+    if(i%2)
+      triangulos_pares.push_back(triangulos[i]);
+    else
+      triangulos_impares.push_back(triangulos[i]);
+  }
+
+  for(int i = 0; i < vertices.size(); i++){
+    color.push_back({0.0, 0.0, 0.0});
+    color_otro.push_back({0.9, 0.0, 1.0});
+  }
+
+}
+
 // *****************************************************************************
 // Clase ObjPLY (práctica 2)
 // *****************************************************************************
@@ -220,7 +255,7 @@ ObjPLY::ObjPLY(const std::string & nombre_archivo){
 ObjRevolucion::ObjRevolucion(const std::string & nombre_ply_perfil, bool tapaArriba, bool tapaAbajo){
 
    ply::read_vertices(nombre_ply_perfil, vertices);
-   crearMalla(vertices, 50, false, false, tapaArriba, tapaAbajo);
+   crearMalla(vertices, 50, false, false, tapaArriba, tapaAbajo, false);
 
    for(int i = 0; i < vertices.size(); i++){
      color.push_back({0.0, 0.0, 0.0});
@@ -230,15 +265,18 @@ ObjRevolucion::ObjRevolucion(const std::string & nombre_ply_perfil, bool tapaArr
 }
 
 //******************************************************************************
+//******************************************************************************
+//Ejercicio 2
+//******************************************************************************
 
-/*ObjetoNuevo::ObjetoNuevo(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo){
+ObjetoBarrido::ObjetoBarrido(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo){
   std::cout << "Creando nuevo objeto..." << std::endl;
   std::vector<Tupla3f> perfil;
 
   for(float i = 1.0; i < num_vert_perfil; i+=1.0){
     if(i >= num_vert_perfil/2){
       float y = -1*1.0 + 2*i/num_vert_perfil;
-      perfil.push_back({(float)(0.4*(0.0 + sqrt(1-(y*y)))), -y*0.4, 0.0*0.4});
+      perfil.push_back({(float)(0.4*(0.0 + sqrt(1-(y*y)))), y*0.4, 0.0*0.4});
     }
     else{
       float y = -1*1.0 + 2*i/num_vert_perfil;
@@ -246,18 +284,18 @@ ObjRevolucion::ObjRevolucion(const std::string & nombre_ply_perfil, bool tapaArr
     }
   }
 
-  crearMalla(perfil, num_instancias_perf, false, false, tapaArriba, tapaAbajo);
+  crearMalla(perfil, num_instancias_perf, false, false, tapaArriba, tapaAbajo, true);
 
   for(int i = 0; i < vertices.size(); i++){
-    color.push_back({1.0, 0.5, 0.5});
-    color_otro.push_back({0.0, 0.0, 0.0});
+    color.push_back({0.0, 0.0, 0.0});
+    color_otro.push_back({0.0, 1.0, 0.0});
   }
-}*/
+}
 
 
 //******************************************************************************
 
-void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perf, bool cono, bool esfera, bool tapaArriba, bool tapaAbajo){
+void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perf, bool cono, bool esfera, bool tapaArriba, bool tapaAbajo, bool barrido){
   Tupla3f v,v1;
   int a, b;
   Tupla3i t;
@@ -267,28 +305,38 @@ void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, con
 
   vertices.clear();
 
-  // rotaciones de los vertices
-  for(int i = 0; i < N; i++){
-    //v = perfil_original[j];
-    for(int j = 0; j < M; j++){
-      float rotacion = (2*M_PI*i)/N;
-      v = perfil_original[j];
-      v1[0] = cos(rotacion)*v[0] + sin(rotacion)*v[2];
-      v1[1] = v[1];
-      v1[2] = cos(rotacion)*v[2] - sin(rotacion)*v[0];
+  if(barrido){
+    // rotaciones de los vertices
+    for(int i = 0; i < N; i++){
+      //v = perfil_original[j];
+        for(int j = 0; j < M; j++){
+          float rotacion = (2*M_PI*i)/N;
+          v = perfil_original[j];
+          v1[0] = cos(rotacion)*v[0] + sin(rotacion)*v[2];
+          v1[1] = v[1];
+          v1[2] = cos(rotacion)*v[2] - sin(rotacion)*v[0];
 
-      /*x
-      v1[0] = v[0];
-      v1[1] = cos(rotacion)*v[1] - sin(rotacion)*v[2];
-      v1[2] = cos(rotacion)*v[2] + sin(rotacion)*v[1];
-      */
-      /*z
-      v1[0] = cos(rotacion)*v[0] - sin(rotacion)*v[1];
-      v1[1] = cos(rotacion)*v[1] + sin(rotacion)*v[0];
-      v1[2] = v[2];
-      */
+          if(i%2)
+            v1 = {0.8*v1[0], 0.8*v1[1], 0.8*v1[2]};
 
-      vertices.push_back(v1);
+          vertices.push_back(v1);
+        }
+
+    }
+  }
+  else{
+    // rotaciones de los vertices
+    for(int i = 0; i < N; i++){
+      //v = perfil_original[j];
+      for(int j = 0; j < M; j++){
+        float rotacion = (2*M_PI*i)/N;
+        v = perfil_original[j];
+        v1[0] = cos(rotacion)*v[0] + sin(rotacion)*v[2];
+        v1[1] = v[1];
+        v1[2] = cos(rotacion)*v[2] - sin(rotacion)*v[0];
+
+        vertices.push_back(v1);
+      }
     }
   }
 
@@ -377,7 +425,7 @@ Cilindro::Cilindro(const int num_vert_perfil, const int num_instancias_perf, boo
     perfil.push_back({1.0, (float)(0.0 + (i+1)/num_vert_perfil), 0.0});
   }
 
-  crearMalla(perfil, num_instancias_perf, false, false, tapaArriba, tapaAbajo);
+  crearMalla(perfil, num_instancias_perf, false, false, tapaArriba, tapaAbajo, false);
 
   for(int i = 0; i < vertices.size(); i++){
     color.push_back({0.7, 0.5, 0.0});
@@ -394,7 +442,7 @@ Cono::Cono(const int num_vert_perfil, const int num_instancias_perf, bool tapaAr
     perfil.push_back({(float)(1.0 - i/num_vert_perfil), (float)(0.0 + i/num_vert_perfil), 0.0});
   }
 
-  crearMalla(perfil, num_instancias_perf, true, false, tapaArriba, tapaAbajo);
+  crearMalla(perfil, num_instancias_perf, true, false, tapaArriba, tapaAbajo, false);
 
   for(int i = 0; i < vertices.size(); i++){
     color.push_back({0.0, 0.0, 0.0});
@@ -412,7 +460,7 @@ Esfera::Esfera(const int num_vert_perfil, const int num_instancias_perf, bool ta
     perfil.push_back({(float)(0.0 + sqrt(1-(y*y))), y, 0.0});
   }
 
-  crearMalla(perfil, num_instancias_perf, false, true, tapaArriba, tapaAbajo);
+  crearMalla(perfil, num_instancias_perf, false, true, tapaArriba, tapaAbajo, false);
 
   for(int i = 0; i < vertices.size(); i++){
     color.push_back({1.0, 0.5, 0.5});

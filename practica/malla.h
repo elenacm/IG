@@ -79,6 +79,12 @@ class Tetraedro : public ObjMallaIndexada{
      Tetraedro();
 };
 
+//Ejercicio 1
+class Piramide : public ObjMallaIndexada{
+   public:
+     Piramide();
+};
+
 // *****************************************************************************
 // objeto leído de un archivo PLY
 
@@ -96,7 +102,7 @@ class ObjRevolucion : public ObjMallaIndexada{
      ObjRevolucion(const std::string & nombre_ply_perfil, bool tapaArriba, bool tapaAbajo);
 
    protected:
-     void crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perf, bool cono, bool esfera, bool tapaArriba, bool tapaAbajo);
+     void crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perf, bool cono, bool esfera, bool tapaArriba, bool tapaAbajo, bool barrido);
 } ;
 
 //******************************************************************************
@@ -123,11 +129,12 @@ class Esfera : public ObjRevolucion{
      Esfera(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
 };
 
-/*class ObjetoNuevo : public ObjRevolucion{
+//Ejercicio 2
+class ObjetoBarrido : public ObjRevolucion{
 
    public:
-     ObjetoNuevo(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
+     ObjetoBarrido(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
 
-};*/
+};
 
 #endif

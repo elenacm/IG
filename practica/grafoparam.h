@@ -28,7 +28,7 @@ class GrafoParam{
      GrafoParam();
 
      // función principal de visualización
-     void draw(const ModoVis p_modo_vis, const bool p_usar_diferido);
+     void draw(const ModoVis p_modo_vis, const bool p_usar_diferido, bool flexo);
 
      // actualizar valor efectivo de un parámetro (a partir de su valor no acotado)
      void actualizarValorEfe(const unsigned iparam, const float valor_na);
@@ -37,6 +37,13 @@ class GrafoParam{
      unsigned numParametros(){ return num_parametros; }
 
    private:
+
+     //Cuerpo del Flexo
+     void cuerpoFlexo(const float radioBase, const float altura, const int rotacionFija);
+     //Base del Flexo
+     void baseFlexo(const float radioBase, const float altura);
+     //cono del flexo
+     void conoFlexo(const float radioBase, const float altura, const int rotacionFija);
 
      // métodos de dibujo de subgrafos
      void columna(const float altura, const float ag_rotacion, const float radio_cil);
@@ -60,6 +67,7 @@ class GrafoParam{
      Cilindro * cilindro = nullptr;
      Cubo *     cubo     = nullptr;
      Esfera * esfera = nullptr;
+     Cono * cono = nullptr;
 
      // parámetros de la llamada actual (o última) a 'draw'
      ModoVis modo_vis;      // modo de visualización

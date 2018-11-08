@@ -26,6 +26,7 @@ Escena::Escena(){
     // crear los objetos de las prácticas: Mallas o Jerárquicos....
     cubo = new Cubo();
     tetraedro = new Tetraedro();
+    piramide = new Piramide();
 
     cono = new Cono(5, 20, true, true);
     cilindro = new Cilindro(2, 100, true, true);
@@ -36,10 +37,12 @@ Escena::Escena(){
 
     objJerarquico = new ObjJerarquico();
 
-//    objetoNuevo = new ObjetoNuevo(100, 100, true, true);
+    objJerarquico1 = new ObjJerarquico();
+
+    objetoBarrido = new ObjetoBarrido(25, 50, true, true);
 
     num_modos = 4;
-    num_objetos = 8; // se usa al pulsar la tecla 'O' (rotar objeto actual)
+    num_objetos = 11; // se usa al pulsar la tecla 'O' (rotar objeto actual)
 
 }
 
@@ -135,16 +138,31 @@ void Escena::dibujar_objeto_actual(){
           bool diferido = false;
           if(modo_dibujado == 1) diferido = true;
 
-          if(modo_actual == 3) objJerarquico->draw(modo_actual, diferido) ;
-          else objJerarquico->draw(modo_actual, diferido);
+          if(modo_actual == 3) objJerarquico->draw(modo_actual, diferido, false);
+          else objJerarquico->draw(modo_actual, diferido, false);
         }
       break;
-      /*case 8: //Objeto Nuevo
-        if(objetoNuevo != nullptr){
-          if(modo_actual == 3) objetoNuevo->draw(true, modo_dibujado) ;
-          else objetoNuevo->draw(false, modo_dibujado);
+      case 8: //piramide
+        if(piramide != nullptr){
+          if(modo_actual == 3) piramide->draw(true, modo_dibujado) ;
+          else piramide->draw(false, modo_dibujado);
         }
-      break;*/
+      break;
+      case 9: //Objeto con perfil barrido
+        if(objetoBarrido != nullptr){
+          if(modo_actual == 3) objetoBarrido->draw(true, modo_dibujado) ;
+          else objetoBarrido->draw(false, modo_dibujado);
+        }
+      break;
+      case 10: //Objeto Jerárquico
+        if(objJerarquico1 != nullptr){
+          bool diferido = false;
+          if(modo_dibujado == 1) diferido = true;
+
+          if(modo_actual == 3) objJerarquico1->draw(modo_actual, diferido, true);
+          else objJerarquico1->draw(modo_actual, diferido, true);
+        }
+      break;
       default:
          cout << "draw_object: el número de objeto actual (" << objeto_actual << ") es incorrecto." << endl ;
       break ;
@@ -294,7 +312,7 @@ void Escena::mgeDesocupado(){
 
 //Se encarga de activar o desactivar las animaciones
 void Escena::conmutarAcciones(){
-  if(objeto_actual == 7){
+  if(objeto_actual == 7 || objeto_actual == 10){
     if(!animacion){
       animacion = true;
       objJerarquico->inicioAnimaciones();

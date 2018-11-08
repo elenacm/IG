@@ -17,6 +17,7 @@ GrafoParam::GrafoParam(){
 
    cilindro = new Cilindro(4, 16, true, true);
    cubo     = new Cubo();
+   cono = new Cono(4, 16, true, true);
    esfera = new Esfera(50, 10, true, true);
 
 }
@@ -65,10 +66,12 @@ void GrafoParam::actualizarValorEfe(const unsigned iparam, const float valor_na)
 // visualización del objeto Jerárquico con OpenGL,
 // mediante llamadas a los métodos 'draw' de los sub-objetos
 
-void GrafoParam::draw(const ModoVis p_modo_vis, const bool p_usar_diferido){
+void GrafoParam::draw(const ModoVis p_modo_vis, const bool p_usar_diferido, bool flexo){
 
    assert(esfera != nullptr);
    assert(cilindro != nullptr);
+   assert(cono != nullptr);
+   assert(cubo != nullptr);
 
    // guardar parametros de visualización para esta llamada a 'draw'
    // (modo de visualización, modo de envío)
@@ -102,54 +105,109 @@ void GrafoParam::draw(const ModoVis p_modo_vis, const bool p_usar_diferido){
       cubo->draw( modo_vis, usar_diferido );
    glPopMatrix();*/
 
-   glPushMatrix();
-     glTranslatef(0.0, 0.35, 0.0);
+   if(flexo){
+     glPushMatrix();
+      baseFlexo(0.2, 1.0);
+
+      glRotatef(ag_rotacion_1, 0.0, 1.0, 0.0);
       glPushMatrix();
-        glRotatef(ag_rotacion_3, 0.0, 1.0, 0.0);
-        glTranslatef(0.0, -0.7, 0.0);
-        //cabeza
-        glTranslatef(0.0, 0.7, 0.0);
-        cabeza(altura_1, 0.2, 0.1, 0.5);
-      glPopMatrix();
-      //cuerpo + piernas + brazos
-      glPushMatrix();
-        //glTranslatef(0.0, 0.5, 0.0);
-        //cuerpo + piernas
+        glTranslatef(-0.25, 0.55, 0.0);
+        //Cono flexo
         glPushMatrix();
-          glRotatef(ag_rotacion_4, 0.0, 1.0, 0.0);
-          cuerpo(-0.3, 0.7);
-          //brazo derecho
+          glTranslatef(0.38, 0.9, 0.0);
+          glRotatef(ag_rotacion_2, 1.0, 0.0, 0.0);
+          conoFlexo(0.3, 0.3, 30);
+        glPopMatrix();
+        //Primer cubo
+        glPushMatrix();
+          cuerpoFlexo(0.1, 1.0, 30);
+        glPopMatrix();
+        //segundo cubo
+        glPushMatrix();
+          glTranslatef(0.06, 0.65, 0.0);
+          cuerpoFlexo(0.1, 0.8, -45);
+        glPopMatrix();
+      glPopMatrix();
+     glPopMatrix();
+   }
+   else{
+     glPushMatrix();
+       glTranslatef(0.0, 0.35, 0.0);
+        glPushMatrix();
+          glRotatef(ag_rotacion_3, 0.0, 1.0, 0.0);
+          glTranslatef(0.0, -0.7, 0.0);
+          //cabeza
+          glTranslatef(0.0, 0.7, 0.0);
+          cabeza(altura_1, 0.2, 0.1, 0.5);
+        glPopMatrix();
+        //cuerpo + piernas + brazos
+        glPushMatrix();
+          //glTranslatef(0.0, 0.5, 0.0);
+          //cuerpo + piernas
           glPushMatrix();
-            glTranslatef(0.25, 0.0, 0.0);
-            glRotatef(45, 0.0, 0.0, 1.0);
-            glTranslatef(0.0, -0.2, 0.0);
+            glRotatef(ag_rotacion_4, 0.0, 1.0, 0.0);
+            cuerpo(-0.3, 0.7);
+            //brazo derecho
+            glPushMatrix();
+              glTranslatef(0.25, 0.0, 0.0);
+              glRotatef(45, 0.0, 0.0, 1.0);
+              glTranslatef(0.0, -0.2, 0.0);
+              articulacion(0.075);
+              extremidad(ag_rotacion_1, 0.075, 0.075, 0.3);
+            glPopMatrix();
+            //brazo izquierdo
+            glPushMatrix();
+              glTranslatef(-0.25, 0.0, 0.0);
+              glRotatef(-45, 0.0, 0.0, 1.0);
+              glTranslatef(0.0, -0.2, 0.0);
+              articulacion(0.075);
+              extremidad(ag_rotacion_2, 0.075, 0.075, 0.3);
+            glPopMatrix();
+          glPopMatrix();
+          //pierna izquierda
+          glPushMatrix();
+            glTranslatef(-0.2, -0.85, 0.0);
             articulacion(0.075);
             extremidad(ag_rotacion_1, 0.075, 0.075, 0.3);
           glPopMatrix();
-          //brazo izquierdo
+          //pierna derecha
           glPushMatrix();
-            glTranslatef(-0.25, 0.0, 0.0);
-            glRotatef(-45, 0.0, 0.0, 1.0);
-            glTranslatef(0.0, -0.2, 0.0);
+            glTranslatef(0.2, -0.85, 0.0);
             articulacion(0.075);
             extremidad(ag_rotacion_2, 0.075, 0.075, 0.3);
           glPopMatrix();
         glPopMatrix();
-        //pierna izquierda
-        glPushMatrix();
-          glTranslatef(-0.2, -0.85, 0.0);
-          articulacion(0.075);
-          extremidad(ag_rotacion_1, 0.075, 0.075, 0.3);
-        glPopMatrix();
-        //pierna derecha
-        glPushMatrix();
-          glTranslatef(0.2, -0.85, 0.0);
-          articulacion(0.075);
-          extremidad(ag_rotacion_2, 0.075, 0.075, 0.3);
-        glPopMatrix();
-      glPopMatrix();
-   glPopMatrix();
+     glPopMatrix();
+   }
 
+}
+
+//Cuerpo del Flexo
+void GrafoParam::cuerpoFlexo(const float radioBase, const float altura, const int rotacionFija){
+  glPushMatrix();
+    glRotatef(rotacionFija, 0.0, 0.0, 1.0);
+    glScalef(radioBase, altura, radioBase);
+    cubo->draw(Modo_vis, usar_diferido);
+  glPopMatrix();
+}
+
+//Cono del Flexo
+void GrafoParam::conoFlexo(const float radioBase, const float altura, const int rotacionFija){
+  glPushMatrix();
+    glRotatef(rotacionFija, 0.0, 0.0, 1.0);
+    glTranslatef(0.0, -altura, 0.0);
+    glScalef(radioBase, altura, radioBase);
+    cono->draw(Modo_vis, usar_diferido);
+  glPopMatrix();
+}
+
+//Base del Flexo
+void GrafoParam::baseFlexo(const float radioBase, const float altura){
+  glPushMatrix();
+    glRotatef(90, 0.0, 0.0, 1.0);
+    glScalef(radioBase, altura, radioBase);
+    cubo->draw(Modo_vis, usar_diferido);
+  glPopMatrix();
 }
 
 //-----------------------------------------------------------
