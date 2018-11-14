@@ -42,7 +42,8 @@ class ObjMallaIndexada{
 
    protected:
 
-     void calcular_normales() ; // calcula tabla de normales de vértices (práctica 3)
+     void calcular_normales_caras(); // calcula tabla de normales de vértices (práctica 3)
+     void calcular_normales_vertices();
 
      GLuint id_vbo_ver = 0,
             id_vbo_tri = 0,
@@ -55,6 +56,9 @@ class ObjMallaIndexada{
 
      // completar: tabla de colores, tabla de normales de vértices
      std::vector<Tupla3f> color, color_otro;
+
+     std::vector<Tupla3f> normal_vertices;
+     std::vector<Tupla3f> normal_caras;
 
 } ;
 
