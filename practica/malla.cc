@@ -109,7 +109,11 @@ void ObjMallaIndexada::draw(bool ajedrez, int modo_dibujado){
 // -----------------------------------------------------------------------------
 // Recalcula la tabla de normales de vértices (el contenido anterior se pierde)
 
-void ObjMallaIndexada::calcular_normales(){
+void ObjMallaIndexada::calcular_normales_caras(){
+  
+}
+
+void ObjMallaIndexada::calcular_normales_vertices(){
   
 }
 
