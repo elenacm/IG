@@ -24,6 +24,21 @@
 
 typedef int ModoVis;
 
+struct Material{
+
+  Tupla4f color = {1.0, 0.0, 0.0, 1.0};
+  Tupla4f em ={0.0,0.0,0.0,1.0};
+
+  Material(){
+      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, color);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color);
+      //glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, 50.0);
+
+      glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, em);
+    }
+};
+
 class ObjMallaIndexada{
 
    public:
@@ -42,25 +57,28 @@ class ObjMallaIndexada{
 
    protected:
 
-     void calcular_normales_caras(); // calcula tabla de normales de vértices (práctica 3)
-     void calcular_normales_vertices();
+     void calcular_normales();
 
      GLuint id_vbo_ver = 0,
             id_vbo_tri = 0,
             id_vbo_par = 0,
             id_vbo_impar = 0;
-     std::vector<Tupla3f> vertices ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
-     std::vector<Tupla3i> triangulos ; // una terna de 3 enteros por cada cara o triángulo
+     std::vector<Tupla3f> vertices;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
+     std::vector<Tupla3i> triangulos; // una terna de 3 enteros por cada cara o triángulo
 
      std::vector<Tupla3i> triangulos_pares, triangulos_impares;
 
      // completar: tabla de colores, tabla de normales de vértices
      std::vector<Tupla3f> color, color_otro;
 
+    //En el constructor de cada objeto
      std::vector<Tupla3f> normal_vertices;
-     std::vector<Tupla3f> normal_caras;
+     std::vector<Tupla3f> normal_triangulos;
 
-} ;
+    Material material;
+    
+    //vector de las texturas solo tiene 4 elementos
+};
 
 // *****************************************************************************
 // clases derivadas de ObjMallaIndexada (definen constructores específicos)
@@ -101,7 +119,7 @@ class ObjRevolucion : public ObjMallaIndexada{
 
    protected:
      void crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perf, bool cono, bool esfera, bool tapaArriba, bool tapaAbajo);
-} ;
+};
 
 //******************************************************************************
 // Cilindro a partir de un objeto de revolucion
@@ -125,6 +143,28 @@ class Cono : public ObjRevolucion{
 class Esfera : public ObjRevolucion{
    public:
      Esfera(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
+};
+
+//******************************************************************************
+// Clase luz
+
+class Luz{
+
+  protected:
+    Tupla3f direccion;    //índice de la fuente de luz
+    Tupla3f luz_punto;    //posición o vector de direccion de la luz
+    Tupla4f c_ambiente;   //componente ambiental de la luz
+    Tupla4f c_difusa;     //componente difusa de la luz
+    Tupla4f c_especular;  //componente especular de la luz
+
+  public:
+
+    Luz(){}
+    
+    void activar();
+    void desactivar();
+
+    //dibujar la luz que llama al glposition
 };
 
 #endif

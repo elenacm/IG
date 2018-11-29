@@ -36,7 +36,9 @@ Escena::Escena(){
 
     objJerarquico = new ObjJerarquico();
 
-    num_modos = 4;
+    luz = new Luz();
+
+    num_modos = 5;
     num_objetos = 8; // se usa al pulsar la tecla 'O' (rotar objeto actual)
 
 }
@@ -63,7 +65,7 @@ void Escena::inicializar(int UI_window_width, int UI_window_height){
 void Escena::dibujar_objeto_actual(){
 
    using namespace std ;
-   glShadeModel(GL_FLAT);
+   glShadeModel(GL_SMOOTH);
 
    switch(modo_actual){
      case 0:
@@ -77,6 +79,10 @@ void Escena::dibujar_objeto_actual(){
        break;
      case 3:
        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //cara delantera y trasera rellenas para el modo ajedrez
+       break;
+     case 4:
+       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+       luz->activar();
        break;
      default:
        cout << "No se puede dibujar" << endl;
@@ -152,6 +158,7 @@ void Escena::dibujar(){
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
   glEnable(GL_CULL_FACE);
+  glEnable(GL_NORMALIZE);
   ejes.draw();
 	dibujar_objeto_actual();
 }
