@@ -26,16 +26,19 @@ typedef int ModoVis;
 
 struct Material{
 
-  Tupla4f color = {1.0, 0.0, 0.0, 1.0};
-  Tupla4f em ={0.0,0.0,0.0,1.0};
+  Tupla4f ambiental = {1.0, 0.0, 0.0, 1.0};
+  Tupla4f difuso = {0.5, 0.0, 0.0, 1.0};
+  Tupla4f especular = {1.0, 1.0, 1.0, 1.0};
+  Tupla4f emision = {0.0, 0.0, 0.0, 1.0};
+  const float brillo = { 200.0 };
 
   Material(){
-      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, color);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color);
-      //glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, 50.0);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambiental);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, difuso);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, especular);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &brillo);
 
-      glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, em);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emision);
     }
 };
 

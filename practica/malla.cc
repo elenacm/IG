@@ -30,13 +30,19 @@ void ObjMallaIndexada::draw_ModoInmediato(bool ajedrez){
     glVertexPointer(3, GL_FLOAT, 0, vertices.data()); //Establecer los vértices
     glNormalPointer(GL_FLOAT, 0, normal_vertices.data());
 
+    /*glBegin(GL_TRIANGLES);
+
+      for(int i = 0; i < triangulos.size(); i++){
+        glNormal3fv(normal_triangulos[i]);
+        glVertex3fv(vertices[triangulos[i][0]]);
+        glVertex3fv(vertices[triangulos[i][1]]);
+        glVertex3fv(vertices[triangulos[i][2]]);
+      }
+    
+    glEnd();*/
+
     //Dibujar los triangulos_pares de la figura
-    glDrawElements(GL_TRIANGLES, triangulos_pares.size()*3, GL_UNSIGNED_INT, triangulos_pares.data());
-
-    if(ajedrez){ glColorPointer(3, GL_FLOAT, 0, color_otro.data()); } //Establecer otro color
-
-    //Dibujar los triangulos_impares
-    glDrawElements(GL_TRIANGLES, triangulos_impares.size()*3, GL_UNSIGNED_INT, triangulos_impares.data());
+    glDrawElements(GL_TRIANGLES, triangulos.size()*3, GL_UNSIGNED_INT, triangulos.data());
 
     glDisableClientState(GL_COLOR_ARRAY);   //deshabilitar array de colores
     glDisableClientState(GL_VERTEX_ARRAY);  //deshabilitar array de vértices
@@ -67,37 +73,66 @@ void ObjMallaIndexada::draw_ModoInmediato(bool ajedrez){
 
 void ObjMallaIndexada::draw_ModoDiferido(bool ajedrez){
 
-  glEnableClientState( GL_VERTEX_ARRAY ); //habilitar uso de un array de vértices
+  if(glIsEnabled(GL_LIGHT0)){
+    glEnableClientState( GL_VERTEX_ARRAY ); //habilitar uso de un array de vértices
+    glDisableClientState(GL_NORMAL_ARRAY);
 
-  if(id_vbo_ver == 0)
-    id_vbo_ver = CrearVBO(GL_ARRAY_BUFFER, sizeof(float)*3*vertices.size(), vertices.data());
+    if(id_vbo_ver == 0)
+      id_vbo_ver = CrearVBO(GL_ARRAY_BUFFER, sizeof(float)*3*vertices.size(), vertices.data());
 
-  glBindBuffer(GL_ARRAY_BUFFER, id_vbo_ver); // activar VBO de vértices
-  glVertexPointer(3, GL_FLOAT, 0, 0); // especifica formato y offset (=0)
-  glBindBuffer(GL_ARRAY_BUFFER, 0); // desactivar VBO de vértices.
+    glBindBuffer(GL_ARRAY_BUFFER, id_vbo_ver); // activar VBO de vértices
+    glVertexPointer(3, GL_FLOAT, 0, 0); // especifica formato y offset (=0)
+    glNormalPointer(GL_FLOAT, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0); // desactivar VBO de vértices.
 
-  glEnableClientState(GL_COLOR_ARRAY); //habilitar uso de un array de colores
+    glEnableClientState(GL_COLOR_ARRAY); //habilitar uso de un array de colores
 
-  if(id_vbo_par == 0)
-    id_vbo_par = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, sizeof(int)*3*triangulos_pares.size(), triangulos_pares.data());
+    if(id_vbo_tri == 0)
+      id_vbo_tri = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, sizeof(int)*3*triangulos.size(), triangulos.data());
 
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_vbo_par); // activar VBO de triángulos
-  glColorPointer(3, GL_FLOAT, 0, color.data()); //Establecer un color inicial
-  glDrawElements(GL_TRIANGLES, triangulos_pares.size()*3, GL_UNSIGNED_INT, 0);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri); // activar VBO de triángulos
+    glColorPointer(3, GL_FLOAT, 0, color.data()); //Establecer un color inicial
+    glDrawElements(GL_TRIANGLES, triangulos.size()*3, GL_UNSIGNED_INT, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-  if(id_vbo_impar == 0)
-    id_vbo_impar = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, sizeof(int)*3*triangulos_impares.size(), triangulos_impares.data());
+    glDisableClientState(GL_COLOR_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);  //deshabilitar array de normales
+  }
+  else{
+    glEnableClientState( GL_VERTEX_ARRAY ); //habilitar uso de un array de vértices
 
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_vbo_impar);// activar VBO de triángulos
+    if(id_vbo_ver == 0)
+      id_vbo_ver = CrearVBO(GL_ARRAY_BUFFER, sizeof(float)*3*vertices.size(), vertices.data());
 
-  if(ajedrez){ glColorPointer(3, GL_FLOAT, 0, color_otro.data()); }
+    glBindBuffer(GL_ARRAY_BUFFER, id_vbo_ver); // activar VBO de vértices
+    glVertexPointer(3, GL_FLOAT, 0, 0); // especifica formato y offset (=0)
+    glBindBuffer(GL_ARRAY_BUFFER, 0); // desactivar VBO de vértices.
 
-  glDrawElements(GL_TRIANGLES, triangulos_impares.size()*3, GL_UNSIGNED_INT, 0);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glEnableClientState(GL_COLOR_ARRAY); //habilitar uso de un array de colores
 
-  glDisableClientState(GL_COLOR_ARRAY);
-  glDisableClientState(GL_VERTEX_ARRAY);
+    if(id_vbo_par == 0)
+      id_vbo_par = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, sizeof(int)*3*triangulos_pares.size(), triangulos_pares.data());
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_vbo_par); // activar VBO de triángulos
+    glColorPointer(3, GL_FLOAT, 0, color.data()); //Establecer un color inicial
+    glDrawElements(GL_TRIANGLES, triangulos_pares.size()*3, GL_UNSIGNED_INT, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    if(id_vbo_impar == 0)
+      id_vbo_impar = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, sizeof(int)*3*triangulos_impares.size(), triangulos_impares.data());
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_vbo_impar);// activar VBO de triángulos
+
+    if(ajedrez){ glColorPointer(3, GL_FLOAT, 0, color_otro.data()); }
+
+    glDrawElements(GL_TRIANGLES, triangulos_impares.size()*3, GL_UNSIGNED_INT, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    glDisableClientState(GL_COLOR_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
+  }
+  
 }
 
 //------------------------------------------------------------------------------
@@ -133,9 +168,6 @@ void ObjMallaIndexada::draw(bool ajedrez, int modo_dibujado){
 // Recalcula la tabla de normales de vértices (el contenido anterior se pierde)
 void ObjMallaIndexada::calcular_normales(){
   //std::cout << "Calculo de normales:" << std::endl;
-  float modulo;
-
-  normal_triangulos.resize(triangulos.size());
   normal_vertices.resize(vertices.size());
 
   //Establecemos todos los valores de las normales de los vertices a 0
@@ -150,28 +182,11 @@ void ObjMallaIndexada::calcular_normales(){
     v1 = vertices[triangulos[i][2]] - vertices[triangulos[i][0]];
 
     //Producto vectorial
-    normal_triangulos[i][0] = v0[1]*v1[2] - v1[2]*v1[1];
-    normal_triangulos[i][1] = v0[0]*v1[2] - v1[2]*v1[0];
-    normal_triangulos[i][2] = v0[0]*v1[1] - v1[1]*v1[0];
-    //Muestro el vector de triangulos
-    //std::cout << "Vector de triangulos normalizado: " << normal_triangulos[i] << std::endl;
+    normal_triangulos.push_back((v0.cross(v1)).normalized());
 
     normal_vertices[triangulos[i][0]] = normal_vertices[triangulos[i][0]] + normal_triangulos[i];
     normal_vertices[triangulos[i][1]] = normal_vertices[triangulos[i][1]] + normal_triangulos[i];
     normal_vertices[triangulos[i][2]] = normal_vertices[triangulos[i][2]] + normal_triangulos[i];
-  }
-
-  //Normalizamos los vertices
-  for(Tupla3f vertice : normal_vertices){
-    //std::cout << "Vector de vertices sin normalizar: " << vertice << std::endl;
-
-    modulo = sqrt(vertice[0]*vertice[0] + vertice[1]*vertice[1] + vertice[2]*vertice[2]);
-
-    vertice[0] = vertice[0]/modulo;
-    vertice[1] = vertice[1]/modulo;
-    vertice[2] = vertice[2]/modulo;
-
-    //std::cout << "Vector de vertices normalizado: " << vertice << std::endl;
   }
 }
 
@@ -292,8 +307,6 @@ ObjRevolucion::ObjRevolucion(const std::string & nombre_ply_perfil, bool tapaArr
      color.push_back({0.0, 0.0, 0.0});
      color_otro.push_back({0.9, 0.0, 1.0});
    }
-
-  calcular_normales();
 }
 
 //******************************************************************************
@@ -397,14 +410,16 @@ void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, con
       triangulos_impares.push_back(triangulos[i]);
   }
 
+  calcular_normales();
+
 }
 
 Cilindro::Cilindro(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo){
   std::cout << "Creando cilinidro..." << std::endl;
   std::vector<Tupla3f> perfil;
 
-  for(int i = 0.0; i < num_vert_perfil; i++){
-    perfil.push_back({1.0, (float)(0.0 + (i+1)/num_vert_perfil), 0.0});
+  for(float i = 0.0; i < num_vert_perfil; i++){
+    perfil.push_back({1.0, (float)(0.0 + i/num_vert_perfil), 0.0});
   }
 
   crearMalla(perfil, num_instancias_perf, false, false, tapaArriba, tapaAbajo);
@@ -413,7 +428,6 @@ Cilindro::Cilindro(const int num_vert_perfil, const int num_instancias_perf, boo
     color.push_back({0.7, 0.5, 0.0});
     color_otro.push_back({0.0, 0.0, 0.0});
   }
-
 }
 
 Cono::Cono(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo){
@@ -430,7 +444,6 @@ Cono::Cono(const int num_vert_perfil, const int num_instancias_perf, bool tapaAr
     color.push_back({0.0, 0.0, 0.0});
     color_otro.push_back({0.9, 0.0, 1.0});
   }
-
 }
 
 Esfera::Esfera(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo){
@@ -451,26 +464,21 @@ Esfera::Esfera(const int num_vert_perfil, const int num_instancias_perf, bool ta
 }
 
 void Luz::activar(){
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+  
+  const float pos_luz[] = {5.0, 3.0, 0.0, 0.0}; //luz direccional
+  const float especular[] = {0.0, 1.0, 0.4, 1.0};
+  const float ambiente[] = {1.0, 0.0, 0.5, 1.0};
+  const float difuso[] = {0.5, 1.0, 0.0, 1.0};
 
-    const float caf[4] = {0.2, 0.2, 0.2, 1.0};
-    const float cdf[4] = {1.0, 0.0, 0.0, 1.0};
-    const float csf[4] = {1.0, 0.0, 0.0, 1.0};
+  glLightfv(GL_LIGHT0, GL_POSITION, pos_luz);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, especular);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, ambiente);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, difuso);
+
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+
     
-    glLightfv(GL_LIGHT0, GL_AMBIENT, caf);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, csf);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, cdf);
-
-  /*
-    //Luz posicional (bombilla)
-    const GLfloat posf[4] = {1.0, 1.0, 0.0, 1.0};
-    glLightfv(GL_LIGHT0, GL_POSITION, posf);
-  */
-
-    //Luz direccional (sol)
-    const GLfloat dirf[4] = {1.0, 1.0, 0.0, 0.0};
-    glLightfv(GL_LIGHT0, GL_POSITION, dirf);
 }
 
 void Luz::desactivar(){

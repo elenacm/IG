@@ -105,21 +105,21 @@ void GrafoParam::draw(const ModoVis p_modo_vis, const bool p_usar_diferido){
      glTranslatef(0.0, 0.35, 0.0);
       glPushMatrix();
         glRotatef(ag_rotacion_3, 0.0, 1.0, 0.0);
-        glTranslatef(0.0, -0.7, 0.0);
+        glTranslatef(0.0, -0.6, 0.0);
         //cabeza
         glTranslatef(0.0, 0.7, 0.0);
         cabeza(altura_1, 0.2, 0.1, 0.5);
       glPopMatrix();
       //cuerpo + piernas + brazos
       glPushMatrix();
-        //glTranslatef(0.0, 0.5, 0.0);
+        glTranslatef(0.0, 0.2, 0.0);
         //cuerpo + piernas
         glPushMatrix();
           glRotatef(ag_rotacion_4, 0.0, 1.0, 0.0);
-          cuerpo(-0.3, 0.7);
+          cuerpo(-0.3, 0.85);
           //brazo derecho
           glPushMatrix();
-            glTranslatef(0.25, 0.0, 0.0);
+            glTranslatef(0.28, -0.2, 0.0);
             glRotatef(45, 0.0, 0.0, 1.0);
             glTranslatef(0.0, -0.2, 0.0);
             articulacion(0.075);
@@ -127,7 +127,7 @@ void GrafoParam::draw(const ModoVis p_modo_vis, const bool p_usar_diferido){
           glPopMatrix();
           //brazo izquierdo
           glPushMatrix();
-            glTranslatef(-0.25, 0.0, 0.0);
+            glTranslatef(-0.28, -0.2, 0.0);
             glRotatef(-45, 0.0, 0.0, 1.0);
             glTranslatef(0.0, -0.2, 0.0);
             articulacion(0.075);
@@ -136,13 +136,13 @@ void GrafoParam::draw(const ModoVis p_modo_vis, const bool p_usar_diferido){
         glPopMatrix();
         //pierna izquierda
         glPushMatrix();
-          glTranslatef(-0.2, -0.85, 0.0);
+          glTranslatef(-0.2, -1.0, 0.0);
           articulacion(0.075);
           extremidad(ag_rotacion_1, 0.075, 0.075, 0.3);
         glPopMatrix();
         //pierna derecha
         glPushMatrix();
-          glTranslatef(0.2, -0.85, 0.0);
+          glTranslatef(0.2, -1.0, 0.0);
           articulacion(0.075);
           extremidad(ag_rotacion_2, 0.075, 0.075, 0.3);
         glPopMatrix();
@@ -158,7 +158,7 @@ void GrafoParam::draw(const ModoVis p_modo_vis, const bool p_usar_diferido){
 void GrafoParam::extremidad(const float ag_rotacion, const float radioE, const float radioC, const float alturaC){
 
   glRotatef(ag_rotacion, 1.0, 0.0, 0.0);
-  glTranslatef(0.0, -alturaC, 0.0);
+  glTranslatef(0.0, -alturaC + 0.08, 0.0);
   glPushMatrix();
     glScalef(radioC, alturaC, radioC);
     cilindro->draw(Modo_vis, usar_diferido);
@@ -197,7 +197,7 @@ void GrafoParam::cabeza(const float traslacion, const float radioE, const float 
     cilindro->draw(Modo_vis, usar_diferido);
   glPopMatrix();
   glPushMatrix();
-    glTranslatef(0.0, -radioE+alturaC-0.05 + traslacion, 0.0);
+    glTranslatef(0.0, -radioE+alturaC-0.08 + traslacion, 0.0);
     glScalef(radioE, radioE, radioE);
     esfera->draw(Modo_vis, usar_diferido);
   glPopMatrix();

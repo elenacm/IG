@@ -36,9 +36,9 @@ Escena::Escena(){
 
     objJerarquico = new ObjJerarquico();
 
-    luz = new Luz();
+    luz1 = new Luz();
 
-    num_modos = 5;
+    num_modos = 6;
     num_objetos = 8; // se usa al pulsar la tecla 'O' (rotar objeto actual)
 
 }
@@ -64,9 +64,10 @@ void Escena::inicializar(int UI_window_width, int UI_window_height){
 
 void Escena::dibujar_objeto_actual(){
 
-   using namespace std ;
-   glShadeModel(GL_SMOOTH);
+   using namespace std;
 
+   glColor3f(0.0, 0.0, 0.0);
+   
    switch(modo_actual){
      case 0:
        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //cara delantera y trasera con lineas
@@ -81,8 +82,14 @@ void Escena::dibujar_objeto_actual(){
        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //cara delantera y trasera rellenas para el modo ajedrez
        break;
      case 4:
-       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-       luz->activar();
+       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //cara delantera y trasera rellenas ILUMINACION PLANA
+       glShadeModel(GL_FLAT);
+       luz_plana = true;
+       break;
+     case 5:
+       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //cara delantera y trasera rellenas ILUMINACION SUAVE
+       glShadeModel(GL_SMOOTH);
+       luz_suave = true;
        break;
      default:
        cout << "No se puede dibujar" << endl;
@@ -215,6 +222,9 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y){
       case '<': //decrementa el valor usado para las animaciones
         objJerarquico->decelerar();
       break;
+      case 'L': //enciende o apaga la luz
+        if(glIsEnabled(GL_LIGHT0)) luz1->desactivar();
+        else luz1->activar();
    }
 
    return false;
