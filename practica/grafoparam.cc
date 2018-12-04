@@ -77,34 +77,16 @@ void GrafoParam::draw(const ModoVis p_modo_vis, const bool p_usar_diferido){
    Modo_vis = false;
    if(modo_vis == 3) Modo_vis = true;
 
-   // dibujar objetos
-   constexpr float
-      sep       = 1.5,  // separación entre centros de las columnas
-      radio_cil = 0.5 , // radio del cilindro más fino
-      radio_cil2 = radio_cil+0.1 ; // radio del cilindro más grueso
-
-   /*glPushMatrix();
-      // primera columna
-      glColor3f( 0.6, 0.2, 0.0 );
-      columna( altura_1, ag_rotacion_1, radio_cil );
-      // segunda columna
-      glPushMatrix();
-         glTranslatef( sep, 0.0, 0.0 );
-         glColor3f( 0.0, 0.2, 0.6 );
-         columna( altura_2, ag_rotacion_2, radio_cil2 );
-      glPopMatrix();
-      // base
-      glColor3f( 0.1, 0.6, 0.1 );
-      glTranslatef( -radio_cil2, -0.1*radio_cil2, -radio_cil2 );
-      glScalef( sep+2.0*radio_cil2, 0.1*radio_cil2, 2.0*radio_cil2 );
-      glTranslatef( 0.5, 0.5, 0.5 );
-      cubo->draw( modo_vis, usar_diferido );
-   glPopMatrix();*/
-
    glPushMatrix();
+     glPushMatrix();
+      glTranslatef(ag_rotacion_4, 0.0, 0.0);
+      
+      Tupla4f pos_luz = {0.0, 0.0, 1.0, 1.0}; //luz posicional
+      glLightfv(GL_LIGHT1, GL_POSITION, pos_luz);
+     glPopMatrix();
      glTranslatef(0.0, 0.35, 0.0);
       glPushMatrix();
-        glRotatef(ag_rotacion_3, 0.0, 1.0, 0.0);
+        glRotatef(ag_rotacion_4, 0.0, 1.0, 0.0);
         glTranslatef(0.0, -0.6, 0.0);
         //cabeza
         glTranslatef(0.0, 0.7, 0.0);
@@ -251,4 +233,11 @@ void GrafoParam::columna(const float altura, const float ag_rotacion, const floa
       cubo->draw( modo_vis, usar_diferido );
    glPopMatrix();
 
+}
+
+void GrafoParam::sigMaterial(){
+  cilindro->sigMaterial();
+  cubo->sigMaterial();
+  esfera->sigMaterial();
+  cono->sigMaterial();
 }

@@ -14,6 +14,36 @@
 // Clase ObjMallaIndexada
 // *****************************************************************************
 
+void ObjMallaIndexada::arrayMateriales(){
+  Tupla4f especular, ambiental, difusa;
+  float brillo;
+
+  ambiental = {0.1, 0.1, 0.0, 1.0};
+  difusa = {0.5, 0.5, 0.4, 1.0};
+  especular = {0.7,0.7, 0.1, 1.0};
+  brillo = 10.3;
+
+  materiales.push_back(Material(especular, ambiental, difusa, brillo));
+
+  ambiental = {0.2, 0.0, 0.0, 1.0};
+  difusa = {0.6, 0.1,0.1, 1.0};
+  especular = {0.7, 0.6, 0.6, 1.0};
+  brillo = 75.4;
+
+  materiales.push_back(Material(especular, ambiental, difusa, brillo));
+
+  ambiental = {0.2, 0.2, 0.2, 1.0};
+  difusa = {0.5, 0.5, 0.5, 1.0};
+  especular = {0.5, 0.5, 0.5, 1.0};
+  brillo = 50.9;
+
+  materiales.push_back(Material(especular, ambiental, difusa, brillo));
+}
+
+void ObjMallaIndexada::sigMaterial(){
+  material = (material+1) % materiales.size();
+}
+
 // -----------------------------------------------------------------------------
 // Visualización en modo inmediato con 'glDrawElements'
 
@@ -30,16 +60,10 @@ void ObjMallaIndexada::draw_ModoInmediato(bool ajedrez){
     glVertexPointer(3, GL_FLOAT, 0, vertices.data()); //Establecer los vértices
     glNormalPointer(GL_FLOAT, 0, normal_vertices.data());
 
-    /*glBegin(GL_TRIANGLES);
-
-      for(int i = 0; i < triangulos.size(); i++){
-        glNormal3fv(normal_triangulos[i]);
-        glVertex3fv(vertices[triangulos[i][0]]);
-        glVertex3fv(vertices[triangulos[i][1]]);
-        glVertex3fv(vertices[triangulos[i][2]]);
-      }
-    
-    glEnd();*/
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materiales[material].especular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, materiales[material].ambiental);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materiales[material].difusa);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, materiales[material].brillo);
 
     //Dibujar los triangulos_pares de la figura
     glDrawElements(GL_TRIANGLES, triangulos.size()*3, GL_UNSIGNED_INT, triangulos.data());
@@ -159,8 +183,10 @@ GLuint ObjMallaIndexada::CrearVBO(GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid 
 
 void ObjMallaIndexada::draw(bool ajedrez, int modo_dibujado){
 
-   if(modo_dibujado == 0) draw_ModoInmediato(ajedrez);
-   else draw_ModoDiferido(ajedrez);
+  arrayMateriales();
+
+  if(modo_dibujado == 0) draw_ModoInmediato(ajedrez);
+  else draw_ModoDiferido(ajedrez);
 
 }
 
@@ -231,7 +257,6 @@ Cubo::Cubo(){
    }
 
    calcular_normales();
-
  }
 
 // *****************************************************************************
@@ -461,27 +486,4 @@ Esfera::Esfera(const int num_vert_perfil, const int num_instancias_perf, bool ta
     color.push_back({1.0, 0.5, 0.5});
     color_otro.push_back({0.0, 0.0, 0.0});
   }
-}
-
-void Luz::activar(){
-  
-  const float pos_luz[] = {5.0, 3.0, 0.0, 0.0}; //luz direccional
-  const float especular[] = {0.0, 1.0, 0.4, 1.0};
-  const float ambiente[] = {1.0, 0.0, 0.5, 1.0};
-  const float difuso[] = {0.5, 1.0, 0.0, 1.0};
-
-  glLightfv(GL_LIGHT0, GL_POSITION, pos_luz);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, especular);
-  glLightfv(GL_LIGHT0, GL_AMBIENT, ambiente);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, difuso);
-
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
-
-    
-}
-
-void Luz::desactivar(){
-  glDisable(GL_LIGHTING);
-  glDisable(GL_LIGHT0);
 }

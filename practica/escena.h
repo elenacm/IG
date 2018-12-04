@@ -11,6 +11,7 @@
 #include "ejes.h"
 #include "malla.h"
 #include "jerarquico.h"
+#include "luz.h"
 
 class Escena{
 
@@ -35,8 +36,6 @@ class Escena{
      void conmutarAcciones();
 
      bool animacion = false;
-     bool luz_plana = false;
-     bool luz_suave = false;
 
      int objeto_actual = 0, // objeto actual (el que se visualiza)
          num_objetos = 0,   // número de objetos (actualizado al crear los objetos en el constructor)
@@ -58,7 +57,10 @@ class Escena{
      ObjJerarquico * objJerarquico = nullptr;
 
      Luz * luz1 = nullptr;
-
+     Luz * luz2 = nullptr;
+     
+     int material = 0;
+     
    public:
 
      Escena();

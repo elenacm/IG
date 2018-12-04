@@ -36,7 +36,8 @@ Escena::Escena(){
 
     objJerarquico = new ObjJerarquico();
 
-    luz1 = new Luz();
+    luz1 = new Luz(GLenum(GL_LIGHT0), Tupla4f(0.0, 0.0, 1.0, 0.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));
+    luz2 = new Luz(GLenum(GL_LIGHT1), Tupla4f(-2.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 0.0, 1.0, 1.0), Tupla4f(1.0, 0.0, 1.0, 1.0));
 
     num_modos = 6;
     num_objetos = 8; // se usa al pulsar la tecla 'O' (rotar objeto actual)
@@ -84,12 +85,10 @@ void Escena::dibujar_objeto_actual(){
      case 4:
        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //cara delantera y trasera rellenas ILUMINACION PLANA
        glShadeModel(GL_FLAT);
-       luz_plana = true;
        break;
      case 5:
        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //cara delantera y trasera rellenas ILUMINACION SUAVE
        glShadeModel(GL_SMOOTH);
-       luz_suave = true;
        break;
      default:
        cout << "No se puede dibujar" << endl;
@@ -166,7 +165,15 @@ void Escena::dibujar(){
 	change_observer();
   glEnable(GL_CULL_FACE);
   glEnable(GL_NORMALIZE);
-  ejes.draw();
+
+  //desactivamos las luces mientras dibujamos
+  if(glIsEnabled(GL_LIGHTING)){
+    glDisable(GL_LIGHTING);
+    ejes.draw();
+    glEnable(GL_LIGHTING);
+  }
+  else  ejes.draw();
+
 	dibujar_objeto_actual();
 }
 
@@ -222,9 +229,22 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y){
       case '<': //decrementa el valor usado para las animaciones
         objJerarquico->decelerar();
       break;
-      case 'L': //enciende o apaga la luz
-        if(glIsEnabled(GL_LIGHT0)) luz1->desactivar();
-        else luz1->activar();
+      case 'L':
+        luz1->activar();
+      break;
+      case 'K':
+        luz2->activar();
+      break;
+      case 'N': //materiales
+        cubo->sigMaterial();
+        tetraedro->sigMaterial();
+        objetoRev->sigMaterial();
+        cono->sigMaterial();
+        cilindro->sigMaterial();
+        esfera->sigMaterial();
+        objetoPLY->sigMaterial();
+        //objJerarquico->sigMaterial();
+      break;
    }
 
    return false;
@@ -298,23 +318,22 @@ void Escena::change_observer(){
 //Se encarga de actualizar el estado de los parámetros del objeto jerárquico
 void Escena::mgeDesocupado(){
   objJerarquico->actualizarEstado();
+  luz2->animar();
   glutPostRedisplay();
 }
 
 //Se encarga de activar o desactivar las animaciones
 void Escena::conmutarAcciones(){
-  if(objeto_actual == 7){
+  //luz2->animar();
     if(!animacion){
       animacion = true;
       objJerarquico->inicioAnimaciones();
+      float rota = objJerarquico->GetGiro();
+      luz2->rotar(rota);
       glutIdleFunc(funcion_desocupado);
     }
     else{
       animacion = false;
       glutIdleFunc(nullptr);
     }
-  }
-  else{
-    std::cout << "Advertencia -> no es el objeto jerarquico" << std::endl;
-  }
 }

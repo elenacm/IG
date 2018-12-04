@@ -44,6 +44,8 @@ void ObjJerarquico::draw(const ModoVis modo_vis, const bool usar_diferido){
 
 }
 
+float ObjJerarquico::GetGiro(){ objparam->GetGiro(); }
+
 // -----------------------------------------------------------------------------
 // incrementa el parámetro actual
 
@@ -155,4 +157,8 @@ void ObjJerarquico::actualizarEstado(){
       objparam->actualizarValorEfe(i, valores_na[i]);
    }
 
+}
+
+void ObjJerarquico::sigMaterial(){
+  objparam->sigMaterial();
 }

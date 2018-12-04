@@ -36,6 +36,10 @@ class GrafoParam{
      // devuelve el número de parámetros
      unsigned numParametros(){ return num_parametros; }
 
+     void sigMaterial();
+
+     float GetGiro(){ return ag_rotacion_4; }
+
    private:
 
      // métodos de dibujo de subgrafos

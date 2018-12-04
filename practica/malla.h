@@ -24,25 +24,22 @@
 
 typedef int ModoVis;
 
-struct Material{
-
-  Tupla4f ambiental = {1.0, 0.0, 0.0, 1.0};
-  Tupla4f difuso = {0.5, 0.0, 0.0, 1.0};
-  Tupla4f especular = {1.0, 1.0, 1.0, 1.0};
-  Tupla4f emision = {0.0, 0.0, 0.0, 1.0};
-  const float brillo = { 200.0 };
-
-  Material(){
-      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambiental);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, difuso);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, especular);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &brillo);
-
-      glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emision);
-    }
-};
-
 class ObjMallaIndexada{
+
+   private:
+
+    struct Material{
+
+      Tupla4f especular, ambiental, difusa;
+      float brillo;
+
+      Material(Tupla4f especular, Tupla4f ambiental, Tupla4f difusa, float brillo){
+        this->ambiental = ambiental;
+        this->especular = especular;
+        this->difusa = difusa;
+        this->brillo = brillo;
+      }
+    };
 
    public:
      // dibuja el objeto en modo inmediato
@@ -57,6 +54,8 @@ class ObjMallaIndexada{
      void draw(bool ajedrez, int modo_dibujado) ;
 
      GLuint CrearVBO(GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
+
+     void sigMaterial();
 
    protected:
 
@@ -78,7 +77,11 @@ class ObjMallaIndexada{
      std::vector<Tupla3f> normal_vertices;
      std::vector<Tupla3f> normal_triangulos;
 
-    Material material;
+     std::vector<Material> materiales;
+
+     void arrayMateriales();
+
+     int material = 0;
     
     //vector de las texturas solo tiene 4 elementos
 };
@@ -146,28 +149,6 @@ class Cono : public ObjRevolucion{
 class Esfera : public ObjRevolucion{
    public:
      Esfera(const int num_vert_perfil, const int num_instancias_perf, bool tapaArriba, bool tapaAbajo);
-};
-
-//******************************************************************************
-// Clase luz
-
-class Luz{
-
-  protected:
-    Tupla3f direccion;    //índice de la fuente de luz
-    Tupla3f luz_punto;    //posición o vector de direccion de la luz
-    Tupla4f c_ambiente;   //componente ambiental de la luz
-    Tupla4f c_difusa;     //componente difusa de la luz
-    Tupla4f c_especular;  //componente especular de la luz
-
-  public:
-
-    Luz(){}
-    
-    void activar();
-    void desactivar();
-
-    //dibujar la luz que llama al glposition
 };
 
 #endif
