@@ -66,7 +66,6 @@ class ObjJerarquico{
       void actualizarEstado();
 
       void sigMaterial();
-      float GetGiro();
 
    private:
       // puntero al objeto con el grafo de escena

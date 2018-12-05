@@ -318,7 +318,7 @@ void Escena::change_observer(){
 //Se encarga de actualizar el estado de los parámetros del objeto jerárquico
 void Escena::mgeDesocupado(){
   objJerarquico->actualizarEstado();
-  luz2->animar();
+  if(objeto_actual != 7) luz2->rotar(true);
   glutPostRedisplay();
 }
 
@@ -327,9 +327,10 @@ void Escena::conmutarAcciones(){
   //luz2->animar();
     if(!animacion){
       animacion = true;
-      objJerarquico->inicioAnimaciones();
-      float rota = objJerarquico->GetGiro();
-      luz2->rotar(rota);
+
+      if(objeto_actual == 7)
+        objJerarquico->inicioAnimaciones();
+
       glutIdleFunc(funcion_desocupado);
     }
     else{

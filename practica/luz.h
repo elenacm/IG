@@ -31,14 +31,14 @@ class Luz{
     bool on;    //indica si la luz está activada
     ins ultima;
     int luces = 0;
+    int contador = 0;
 
   public:
 
     Luz(GLenum indice, Tupla4f luz_punto, Tupla4f c_ambiente, Tupla4f c_difusa, Tupla4f c_especular);
     
     void activar();
-    void animar();
-    void rotar(float angulo);
+    void rotar(bool rota);
 };
 
 #endif

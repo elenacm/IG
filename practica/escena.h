@@ -60,7 +60,7 @@ class Escena{
      Luz * luz2 = nullptr;
      
      int material = 0;
-     
+     int contador = 0;
    public:
 
      Escena();

@@ -51,18 +51,19 @@ void Luz::activar(){
     if(luces == 0)  glDisable(GL_LIGHTING);    
 }
 
-void Luz::animar(){
-    using namespace std::chrono;
-    ultima = steady_clock::now();
-}
+void Luz::rotar(bool rota){
 
-void Luz::rotar(float angulo){
+    if(rota)
+        contador++;
+    else
+        contador = 0;
     
+    //angulo = 37.5*sin( 1.5*(2.0*M_PI*1) );
     glPushMatrix();
-      glTranslatef(angulo, 0.0, 0.0);
-      
-      Tupla4f pos_luz = {0.0, 0.0, 1.0, 1.0}; //luz posicional
-      glLightfv(GL_LIGHT1, GL_POSITION, pos_luz);
-     glPopMatrix();
+      glRotatef(8*contador, 0.0, 1.0, 0.0);
+      glTranslatef(-1.0, 0.0, 0.0);
+      //Tupla4f pos_luz = {0.0, 0.0, 1.0, 1.0}; //luz posicional
+      glLightfv(GL_LIGHT1, GL_POSITION, luz_punto);
+    glPopMatrix();
 
 }
