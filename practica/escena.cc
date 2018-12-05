@@ -36,12 +36,13 @@ Escena::Escena(){
 
     objJerarquico = new ObjJerarquico();
 
+    cuadro = new Cuadro();
+
     luz1 = new Luz(GLenum(GL_LIGHT0), Tupla4f(0.0, 0.0, 1.0, 0.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));
     luz2 = new Luz(GLenum(GL_LIGHT1), Tupla4f(-2.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 0.0, 1.0, 1.0), Tupla4f(1.0, 0.0, 1.0, 1.0));
 
     num_modos = 6;
-    num_objetos = 8; // se usa al pulsar la tecla 'O' (rotar objeto actual)
-
+    num_objetos = 9; // se usa al pulsar la tecla 'O' (rotar objeto actual)
 }
 
 //**************************************************************************
@@ -148,6 +149,9 @@ void Escena::dibujar_objeto_actual(){
           if(modo_actual == 3) objJerarquico->draw(modo_actual, diferido);
           else objJerarquico->draw(modo_actual, diferido);
         }
+      break;
+      case 8: //cuadro
+        if(cuadro != nullptr) cuadro->draw(false, modo_dibujado);
       break;
       default:
          cout << "draw_object: el número de objeto actual (" << objeto_actual << ") es incorrecto." << endl ;

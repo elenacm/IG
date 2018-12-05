@@ -17,6 +17,7 @@
 #define GRAFOPARAM_H_INCLUDED
 
 #include "malla.h" // añadir .h de cualquier objetos malla indexada usados....
+#include "cubo.h"
 
 constexpr int num_parametros = 5; //número de parámetros o grados de libertad
                                   //de este modelo

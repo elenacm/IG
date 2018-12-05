@@ -12,6 +12,9 @@
 #include "malla.h"
 #include "jerarquico.h"
 #include "luz.h"
+#include "cubo.h"
+#include "tetraedro.h"
+#include "cuadro.h"
 
 class Escena{
 
@@ -61,6 +64,9 @@ class Escena{
      
      int material = 0;
      int contador = 0;
+
+     Cuadro * cuadro = nullptr;
+
    public:
 
      Escena();

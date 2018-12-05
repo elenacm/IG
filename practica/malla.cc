@@ -49,27 +49,33 @@ void ObjMallaIndexada::sigMaterial(){
 
 void ObjMallaIndexada::draw_ModoInmediato(bool ajedrez){
 
-  if(glIsEnabled(GL_LIGHT0)){
+  if(glIsEnabled(GL_LIGHTING)){
     //usamos normales y material
 
-    glEnableClientState(GL_VERTEX_ARRAY); //habilitar uso de un array de vértices
-    glEnableClientState(GL_COLOR_ARRAY);  //habilitar uso de un array de colores
     glEnableClientState(GL_NORMAL_ARRAY); //habilitar uso de normales
-
-    glColorPointer(3, GL_FLOAT, 0, color.data()); //Establecer el color inicial
-    glVertexPointer(3, GL_FLOAT, 0, vertices.data()); //Establecer los vértices
     glNormalPointer(GL_FLOAT, 0, normal_vertices.data());
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materiales[material].especular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, materiales[material].ambiental);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materiales[material].difusa);
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, materiales[material].brillo);
+  }
 
-    //Dibujar los triangulos_pares de la figura
+  if(!texturas.empty()){
+    glEnableClientState(GL_NORMAL_ARRAY); //habilitar uso de normales
+    glEnableClientState(GL_VERTEX_ARRAY); //habilitar uso de un array de vértices
+
+    glVertexPointer(3, GL_FLOAT, 0, vertices.data()); //Establecer los vértices
+    glNormalPointer(GL_FLOAT, 0, normal_vertices.data());
+
+    texturas[0].activar();
+
     glDrawElements(GL_TRIANGLES, triangulos.size()*3, GL_UNSIGNED_INT, triangulos.data());
+    glBindTexture(GL_TEXTURE_2D, 0);
 
-    glDisableClientState(GL_COLOR_ARRAY);   //deshabilitar array de colores
-    glDisableClientState(GL_VERTEX_ARRAY);  //deshabilitar array de vértices
+    glDisable(GL_TEXTURE_2D);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);   //deshabilitar array de vértices
     glDisableClientState(GL_NORMAL_ARRAY);  //deshabilitar array de normales
   }
   else{
@@ -89,6 +95,7 @@ void ObjMallaIndexada::draw_ModoInmediato(bool ajedrez){
 
     glDisableClientState(GL_COLOR_ARRAY);   //deshabilitar array de colores
     glDisableClientState(GL_VERTEX_ARRAY);  //deshabilitar array de vértices
+    glDisableClientState(GL_NORMAL_ARRAY);
   }
 }
 
@@ -214,81 +221,6 @@ void ObjMallaIndexada::calcular_normales(){
     normal_vertices[triangulos[i][1]] = normal_vertices[triangulos[i][1]] + normal_triangulos[i];
     normal_vertices[triangulos[i][2]] = normal_vertices[triangulos[i][2]] + normal_triangulos[i];
   }
-}
-
-// *****************************************************************************
-// Clase Cubo (práctica 1)
-// *****************************************************************************
-
-Cubo::Cubo(){
-
-   // inicializar la tabla de vértices
-   vertices =  {  { -0.5, -0.5, -0.5 }, // 0
-                  { -0.5, -0.5, +0.5 }, // 1
-                  { -0.5, +0.5, -0.5 }, // 2
-                  { -0.5, +0.5, +0.5 }, // 3
-                  { +0.5, -0.5, -0.5 }, // 4
-                  { +0.5, -0.5, +0.5 }, // 5
-                  { +0.5, +0.5, -0.5 }, // 6
-                  { +0.5, +0.5, +0.5 }  // 7
-               };
-
-   // inicializar la tabla de caras o triángulos:
-   // (es importante en cada cara ordenar los vértices en sentido contrario
-   //  de las agujas del reloj, cuando esa cara se observa desde el exterior del cubo)
-   triangulos = { { 0, 2, 4 }, { 4, 2, 6 },
-                  { 1, 5, 3 }, { 3, 5, 7 },
-                  { 1, 3, 0 }, { 0, 3, 2 },
-                  { 5, 4, 7 }, { 7, 4, 6 },
-                  { 1, 0, 5 }, { 5, 0, 4 },
-                  { 3, 7, 2 }, { 2, 7, 6 }
-                } ;
-
-   for(int i = 0; i < triangulos.size(); i++){
-     if(i%2)
-       triangulos_pares.push_back(triangulos[i]);
-     else
-       triangulos_impares.push_back(triangulos[i]);
-   }
-
-   for(int i = 0; i < vertices.size(); i++){
-     color.push_back({0.0, 0.0, 0.0});
-     color_otro.push_back({0.9, 0.0, 1.0});
-   }
-
-   calcular_normales();
- }
-
-// *****************************************************************************
-// Clase Tetraedro (práctica 1)
-// *****************************************************************************
-
-Tetraedro::Tetraedro(){
-
-  //inicializamos la tabla de vértices
-  vertices = { {1.0, 0.0, 0.0},   //0
-               {-1.0, 0.0, 0.0},  //1
-               {0.0, 0.0, 1.0},   //2
-               {0.0, 1.0, 0.0}    //3
-             };
-
-  //Inicializamos la tabla de caras(triángulos)
-  triangulos = { {0,2,1}, {0,1,3}, {1,2,3}, {0,3,2} };
-
-  for(int i = 0; i < triangulos.size(); i++){
-    if(i%2)
-      triangulos_pares.push_back(triangulos[i]);
-    else
-      triangulos_impares.push_back(triangulos[i]);
-  }
-
-  for(int i = 0; i < vertices.size(); i++){
-    color.push_back({0.0, 0.0, 0.0});
-    color_otro.push_back({0.9, 0.0, 1.0});
-  }
-
-  calcular_normales();
-
 }
 
 // *****************************************************************************

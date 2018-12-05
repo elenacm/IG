@@ -17,6 +17,7 @@
 #define OBJETOS_H_INCLUDED
 
 #include "aux.h"
+#include "textura.h"
 
 // *****************************************************************************
 // clase para objetos 3D (mallas indexadas)
@@ -84,28 +85,12 @@ class ObjMallaIndexada{
      int material = 0;
     
     //vector de las texturas solo tiene 4 elementos
+    std::vector<Textura> texturas;
 };
 
 // *****************************************************************************
 // clases derivadas de ObjMallaIndexada (definen constructores específicos)
 // *****************************************************************************
-
-// *****************************************************************************
-// Cubo con centro en el origen y lado unidad
-// (tiene 8 vertices y 6 caras)
-
-class Cubo : public ObjMallaIndexada{
-   public:
-     Cubo();
-};
-
-//******************************************************************************
-// Tetraedro
-
-class Tetraedro : public ObjMallaIndexada{
-   public:
-     Tetraedro();
-};
 
 // *****************************************************************************
 // objeto leído de un archivo PLY

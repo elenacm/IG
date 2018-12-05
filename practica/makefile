@@ -28,14 +28,14 @@ ld_libs_common := -ljpeg
 ld_libs_linux  := -lGLEW -lGLU -lglut -lGL
 ld_libs_macos  := -framework OpenGL -framework GLUT $(glu_flag_macos)
 ld_libs        := $(ld_libs_common) $(if $(en_linux), $(ld_libs_linux), $(ld_libs_macos))
-
+LIBS := -L/usr/X11R6/lib -lGL -lGLU -lglut -lm -lX11 -lpthread
 
 x: $(exe)
 	@echo Enlazando para: $(sistoper)
 	./$(exe)
 
 $(exe): $(units_o) makefile
-	$(compiler) -o $(exe)  $(units_o) $(ld_libs)
+	$(compiler) -o $(exe)  $(units_o) $(ld_libs) -I $(LIBS)
 
 %.o : %.cc
 	$(compiler) -c  $(cc_flags) $<
