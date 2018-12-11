@@ -71,6 +71,8 @@ class Escena{
      int material = 0;
      int contador = 0;
 
+     bool cambio = false;
+
      Cuadro * cuadro = nullptr;
 
    public:

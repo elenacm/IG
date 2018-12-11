@@ -280,14 +280,20 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y){
           break;
         }
       break;
+      case 'C': //cambio de normales orientadas a las normales de un cubo
+        if(!cambio){
+          cambio = true;
+          if(objeto_actual == 2)  objetoPLY->cambioNormales();
+          else  std::cout << "No es el objeto PLY" << std::endl;
+        }
+        else {
+          cambio = false;
+        }
+      break;
    }
 
    return false;
 }
-
-/*void Escena::sigMaterial(){
-
-}*/
 
 //**************************************************************************
 

@@ -25,7 +25,7 @@ void ObjMallaIndexada::arrayMateriales(){
   brillo = 12.8;
 
   materiales.push_back(Material(especular, ambiental, difusa, brillo));
-/*
+
   //material esmeralda
   ambiental = {0.0215, 0.1745, 0.0215, 1.0};
   difusa = {0.07568, 0.61424, 0.07568, 1.0};
@@ -40,8 +40,9 @@ void ObjMallaIndexada::arrayMateriales(){
   especular = {0.628281, 0.555802, 0.366065, 1.0};
   brillo = 51.2;
 
-  materiales.push_back(Material(especular, ambiental, difusa, brillo));*/
+  materiales.push_back(Material(especular, ambiental, difusa, brillo));
 
+  //material gris
   ambiental = {0.2, 0.2, 0.2, 1.0};
   difusa = {0.5, 0.5, 0.5, 1.0};
   especular = {0.5, 0.5, 0.5, 1.0};
@@ -49,6 +50,7 @@ void ObjMallaIndexada::arrayMateriales(){
 
   materiales.push_back(Material(especular, ambiental, difusa, brillo));
 
+  //material rojo
   ambiental = {0.2, 0.0, 0.0, 1.0};
   difusa = {0.6, 0.1,0.1, 1.0};
   especular = {0.7, 0.6, 0.6, 1.0};
@@ -58,10 +60,37 @@ void ObjMallaIndexada::arrayMateriales(){
 }
 
 void ObjMallaIndexada::sigMaterial(){
-  std::cout << "numero material " << material << std::endl;
-  std::cout << "materiales " << materiales.size() << std::endl;
+  //std::cout << "numero material " << material << std::endl;
+  //std::cout << "materiales " << materiales.size() << std::endl;
   if(material == materiales.size()) material = 0;
   material = (material+1) % materiales.size();
+}
+
+void ObjMallaIndexada::cambioNormales(){
+  float maximo;
+  int indice;
+
+  if(!normal_vertices.empty()){
+    for(int i = 0; i < normal_vertices.size(); i++){
+      maximo = normal_vertices[i][0];
+      indice = 0;
+
+      if(abs(maximo) < abs(normal_vertices[i][1])){
+        maximo = normal_vertices[i][1];
+        indice = 1;
+      }
+      else if(abs(maximo) < abs(normal_vertices[i][2])){
+        maximo = normal_vertices[i][2];
+        indice = 2;
+      }
+
+      switch(indice){
+        case 0: normal_vertices[i] = {maximo, 0.0, 0.0}; break;
+        case 1: normal_vertices[i] = {0.0, maximo, 0.0}; break;
+        case 2: normal_vertices[i] = {0.0, 0.0, maximo}; break;
+      }
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
