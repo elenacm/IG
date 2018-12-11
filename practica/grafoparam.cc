@@ -9,6 +9,7 @@
 
 
 #include "grafoparam.h"
+#include "malla.h"
 
 // -----------------------------------------------------------------------------
 // constructor: crea mallas indexadas en los nodos terminales del grafo
@@ -237,7 +238,5 @@ void GrafoParam::columna(const float altura, const float ag_rotacion, const floa
 
 void GrafoParam::sigMaterial(){
   cilindro->sigMaterial();
-  cubo->sigMaterial();
   esfera->sigMaterial();
-  cono->sigMaterial();
 }

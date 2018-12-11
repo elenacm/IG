@@ -38,7 +38,7 @@ class Luz{
     Luz(GLenum indice, Tupla4f luz_punto, Tupla4f c_ambiente, Tupla4f c_difusa, Tupla4f c_especular);
     
     void activar();
-    void rotar(bool rota);
+    void rotar(bool rota, char eje);
 };
 
 #endif

@@ -83,6 +83,8 @@ class ObjMallaIndexada{
      void arrayMateriales();
 
      int material = 0;
+
+     bool materiales_off = true;
     
     //vector de las texturas solo tiene 4 elementos
     std::vector<Textura> texturas;

@@ -38,8 +38,15 @@ Escena::Escena(){
 
     cuadro = new Cuadro();
 
+    //direccional
     luz1 = new Luz(GLenum(GL_LIGHT0), Tupla4f(0.0, 0.0, 1.0, 0.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));
+    //puntual
     luz2 = new Luz(GLenum(GL_LIGHT1), Tupla4f(-2.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 0.0, 1.0, 1.0), Tupla4f(1.0, 0.0, 1.0, 1.0));
+
+    //Examen A3
+    /*luz_amarilla = new Luz(GLenum(GL_LIGHT2), Tupla4f(2.0, -1.0, -1.0, 0.0), Tupla4f(0.2, 0.2, 0.2, 1.0), Tupla4f(1.0, 1.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 0.0, 1.0));
+    luz_verde = new Luz(GLenum(GL_LIGHT3), Tupla4f(11, -11, 11, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 1.0, 0.0, 1.0), Tupla4f(0.0, 1.0, 0.0, 1.0));
+    */
 
     num_modos = 6;
     num_objetos = 9; // se usa al pulsar la tecla 'O' (rotar objeto actual)
@@ -176,7 +183,7 @@ void Escena::dibujar(){
     ejes.draw();
     glEnable(GL_LIGHTING);
   }
-  else  ejes.draw();
+  else ejes.draw();
 
 	dibujar_objeto_actual();
 }
@@ -235,24 +242,52 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y){
       break;
       case 'L':
         luz1->activar();
+        //luz_amarilla->activar();
       break;
       case 'K':
         luz2->activar();
+        //luz_verde->activar();
+      break;
+      /*case 'H':
+        letraH = true;
+        conmutarAcciones();*/
       break;
       case 'N': //materiales
-        cubo->sigMaterial();
-        tetraedro->sigMaterial();
-        objetoRev->sigMaterial();
-        cono->sigMaterial();
-        cilindro->sigMaterial();
-        esfera->sigMaterial();
-        objetoPLY->sigMaterial();
-        //objJerarquico->sigMaterial();
+        switch(objeto_actual){
+          case 0:
+            cubo->sigMaterial();
+          break;
+          case 1:
+            tetraedro->sigMaterial();
+          break;
+          case 2:
+            objetoPLY->sigMaterial();
+          break;
+          case 3:
+            objetoRev->sigMaterial();
+          break;
+          case 4:
+            cilindro->sigMaterial();
+          break;
+          case 5:
+            cono->sigMaterial();
+          break;
+          case 6:
+            esfera->sigMaterial();
+          break;
+          case 7:
+            objJerarquico->sigMaterial();
+          break;
+        }
       break;
    }
 
    return false;
 }
+
+/*void Escena::sigMaterial(){
+
+}*/
 
 //**************************************************************************
 
@@ -322,14 +357,14 @@ void Escena::change_observer(){
 //Se encarga de actualizar el estado de los parámetros del objeto jerárquico
 void Escena::mgeDesocupado(){
   objJerarquico->actualizarEstado();
-  if(objeto_actual != 7) luz2->rotar(true);
+  if(objeto_actual != 7) luz2->rotar(true, 'y');
+  //if(letraH) luz_verde->rotar(true, 'x');
   glutPostRedisplay();
 }
 
 //Se encarga de activar o desactivar las animaciones
 void Escena::conmutarAcciones(){
-  //luz2->animar();
-    if(!animacion){
+    if(!animacion){ //|| letraH
       animacion = true;
 
       if(objeto_actual == 7)
@@ -339,6 +374,7 @@ void Escena::conmutarAcciones(){
     }
     else{
       animacion = false;
+      //letraH = false;
       glutIdleFunc(nullptr);
     }
 }

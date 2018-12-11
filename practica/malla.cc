@@ -17,11 +17,35 @@
 void ObjMallaIndexada::arrayMateriales(){
   Tupla4f especular, ambiental, difusa;
   float brillo;
+  
+  //material turquesa
+  ambiental = {0.1, 0.18725, 0.1745, 1.0};
+  difusa = {0.396, 0.74151, 0.69102, 1.0};
+  especular = {0.297254, 0.30829, 0.306678, 1.0};
+  brillo = 12.8;
 
-  ambiental = {0.1, 0.1, 0.0, 1.0};
-  difusa = {0.5, 0.5, 0.4, 1.0};
-  especular = {0.7,0.7, 0.1, 1.0};
-  brillo = 10.3;
+  materiales.push_back(Material(especular, ambiental, difusa, brillo));
+/*
+  //material esmeralda
+  ambiental = {0.0215, 0.1745, 0.0215, 1.0};
+  difusa = {0.07568, 0.61424, 0.07568, 1.0};
+  especular = {0.633, 0.727811, 0.633, 1.0};
+  brillo = 76.8;
+
+  materiales.push_back(Material(especular, ambiental, difusa, brillo));
+
+  //material oro
+  ambiental = {0.24725, 0.1995, 0.0745, 1.0};
+  difusa = {0.75164, 0.60648, 0.22648, 1.0};
+  especular = {0.628281, 0.555802, 0.366065, 1.0};
+  brillo = 51.2;
+
+  materiales.push_back(Material(especular, ambiental, difusa, brillo));*/
+
+  ambiental = {0.2, 0.2, 0.2, 1.0};
+  difusa = {0.5, 0.5, 0.5, 1.0};
+  especular = {0.5, 0.5, 0.5, 1.0};
+  brillo = 50.9;
 
   materiales.push_back(Material(especular, ambiental, difusa, brillo));
 
@@ -31,16 +55,12 @@ void ObjMallaIndexada::arrayMateriales(){
   brillo = 75.4;
 
   materiales.push_back(Material(especular, ambiental, difusa, brillo));
-
-  ambiental = {0.2, 0.2, 0.2, 1.0};
-  difusa = {0.5, 0.5, 0.5, 1.0};
-  especular = {0.5, 0.5, 0.5, 1.0};
-  brillo = 50.9;
-
-  materiales.push_back(Material(especular, ambiental, difusa, brillo));
 }
 
 void ObjMallaIndexada::sigMaterial(){
+  std::cout << "numero material " << material << std::endl;
+  std::cout << "materiales " << materiales.size() << std::endl;
+  if(material == materiales.size()) material = 0;
   material = (material+1) % materiales.size();
 }
 
@@ -190,7 +210,10 @@ GLuint ObjMallaIndexada::CrearVBO(GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid 
 
 void ObjMallaIndexada::draw(bool ajedrez, int modo_dibujado){
 
-  arrayMateriales();
+  if(materiales_off){
+    arrayMateriales();
+    materiales_off = false;
+  }
 
   if(modo_dibujado == 0) draw_ModoInmediato(ajedrez);
   else draw_ModoDiferido(ajedrez);

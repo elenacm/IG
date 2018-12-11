@@ -31,6 +31,13 @@ void Luz::activar(){
         glEnable(indice);
         glEnable(GL_LIGHTING); 
 
+        if(indice == 0 || indice == 2){
+            glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_FALSE);
+        }
+        else if(indice == 1 || indice == 3){
+            glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+        }
+
         glLightfv(indice, GL_SPECULAR, c_especular);
         glLightfv(indice, GL_AMBIENT, c_ambiente);
         glLightfv(indice, GL_DIFFUSE, c_difusa);
@@ -51,19 +58,33 @@ void Luz::activar(){
     if(luces == 0)  glDisable(GL_LIGHTING);    
 }
 
-void Luz::rotar(bool rota){
+void Luz::rotar(bool rota, char eje){
 
     if(rota)
         contador++;
     else
         contador = 0;
-    
-    //angulo = 37.5*sin( 1.5*(2.0*M_PI*1) );
-    glPushMatrix();
-      glRotatef(8*contador, 0.0, 1.0, 0.0);
-      glTranslatef(-1.0, 0.0, 0.0);
-      //Tupla4f pos_luz = {0.0, 0.0, 1.0, 1.0}; //luz posicional
-      glLightfv(GL_LIGHT1, GL_POSITION, luz_punto);
-    glPopMatrix();
+
+    if(eje == 'x'){
+        glPushMatrix();
+        glRotatef(8*contador, 1.0, 0.0, 0.0);
+        glTranslatef(-1.0, 0.0, 0.0);
+        glLightfv(GL_LIGHT3, GL_POSITION, luz_punto);
+        glPopMatrix();
+    }
+    else if(eje == 'y'){
+        glPushMatrix();
+        glRotatef(8*contador, 0.0, 1.0, 0.0);
+        glTranslatef(-1.0, 0.0, 0.0);
+        glLightfv(GL_LIGHT1, GL_POSITION, luz_punto);
+        glPopMatrix();
+    }
+    else if(eje == 'z'){
+        glPushMatrix();
+        glRotatef(8*contador, 0.0, 1.0, 0.0);
+          glTranslatef(-1.0, 0.0, 0.0);
+          glLightfv(GL_LIGHT1, GL_POSITION, luz_punto);
+        glPopMatrix();
+    }
 
 }
