@@ -66,6 +66,33 @@ void ObjMallaIndexada::sigMaterial(){
   material = (material+1) % materiales.size();
 }
 
+void ObjMallaIndexada::cambioNormales(){
+  float maximo;
+  int indice;
+
+  if(!normal_vertices.empty()){
+    for(int i = 0; i < normal_vertices.size(); i++){
+      maximo = normal_vertices[i][0];
+      indice = 0;
+
+      if(abs(maximo) < abs(normal_vertices[i][1])){
+        maximo = normal_vertices[i][1];
+        indice = 1;
+      }
+      else if(abs(maximo) < abs(normal_vertices[i][2])){
+        maximo = normal_vertices[i][2];
+        indice = 2;
+      }
+
+      switch(indice){
+        case 0: normal_vertices[i] = {maximo, 0.0, 0.0}; break;
+        case 1: normal_vertices[i] = {0.0, maximo, 0.0}; break;
+        case 2: normal_vertices[i] = {0.0, 0.0, maximo}; break;
+      }
+    }
+  }
+}
+
 // -----------------------------------------------------------------------------
 // Visualización en modo inmediato con 'glDrawElements'
 

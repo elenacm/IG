@@ -1,0 +1,72 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{amsmath}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{mathpazo}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage[spanish]{babel}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{longtable}
+\usepackage{hyperref}
+\title{\textbf{Tema 3.}\textbf{ Introducción a la informática gráfica}}
+\author{Elena Cantero Molina (Grupo A)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+%{\parskip=1pt\tableofcontents}
+
+\setlength{\parskip}{5pt}
+
+\section{Iluminación}
+
+\textbf{63. Documente en sus apuntes la definición de la orientación de una cámara mediante los parámetros pitch, roll y yaw (ángulos de Tait‐Bryan).}
+
+Los ángulos de Tait-Bryan, también llamados ángulos de navegación, son tres coordenadas angulares que definen un triedro rotado desde otro que se considera el sistema de referencia.
+
+Los tres ángulos son las dirección (yaw), elevación (pitch) y ángulo de balanceo (roll), los cuales representan una forma de describir la rotación de la cámara en 3D y nos indican cuánto debemos rotar en cada eje. En el caso de una cámara:
+ Yaw representaría mover la cámara de izquierda a derecha o viceversa ( eje Y).
+Pitch representaría el movimiento de la cámara de arriba a abajo ( eje X).
+Roll representaría la rotación de manera oblicua, en un movimiento similar al que hacemos cuando inclinamos la cabeza hacia un lado ( eje Z).
+
+\textbf{65. ¿Cómo se implementaría una proyección oblicua en OpenGL?}
+Situando el proyector en el infinito pero fuera del eje Z de la cámara. En este caso, los proyectores no son normales al plano de proyección como sí ocurre en la proyección ortográfica. El plano de proyección es normal a un eje principal. Antes de aplicar cualquiera de los comandos de transformación, debemos añadir lo siguiente:
+
+\begin{lstlisting}
+glMatrixMode(GL_PROJECTION);
+glLoadIdentity();
+\end{lstlisting}
+
+De este modo, conseguimos que los comandos afecten a la matriz de proyección en lugar de a la matriz de vista de modelo y para que evite las transformaciones de proyección compuestas. Dado que cada comando de transformación de proyección describe completamente una transformación en particular, normalmente no se desea combinar una transformación de proyección con otra transformación.
+
+\textbf{66. ¿Qué efectos se aplican en la imagen generada de la escena las siguientes acciones:}
+\begin{enumerate}
+\item Mover el centro de proyección hacia el plano de proyección?\\
+Los objetos se verán más pequeños y distorsionados.
+\item Alejar el plano de proyección del centro de proyección?\\
+Se corta parte de la escena.
+\end{enumerate}
+
+\textbf{68. El espacio de color RGB es aditivo. ¿Existen los espacios de color sustractivos? Documéntelo en sus apuntes.}
+
+La síntesis sustractiva explica la teoría de la mezcla de pinturas, tintes, tintas y colorantes naturales para crear colores que absorben ciertas longitudes de onda y reflejan otras. El color que parece que tiene un determinado objeto depende de qué partes del espectro electromagnético son reflejadas por él, o dicho a la inversa, qué partes del espectro no son absorbidas.
+
+Se necesitan tres cosas para ver un color: una fuente de luz, una muestra y un detector (que puede ser nuestra vista).
+
+La síntesis sustractiva de color se aplica en la impresión a color y la fotografía en color, pero también en las artes plásticas y la pintura decorativa. Se pueden usar los siguientes modelos: 
+CMY, CMYK, RYB o CcMmYK.
+
+\textbf{69. El espacio RGB no es el único esquema para representar computacionalmente los colores, pero sí el más usado. Documente en sus apuntes la teoría de color que subyace bajo el modelo HSV.}
+
+El modelo HSV (del inglés Hue, Saturation, Value – Matiz, Saturación, Valor), también llamado HSB (Hue, Saturation, Brightness – Matiz, Saturación, Brillo), define un modelo de color en términos de sus componentes. 
+
+El modelo HSV fue creado en 1978 por Alvy Ray Smith. Se trata de una transformación no lineal del espacio de color RGB, y se puede usar en progresiones de color. 
+
+\end{document}

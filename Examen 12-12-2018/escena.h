@@ -63,10 +63,18 @@ class Escena{
      Luz * luz1 = nullptr;
      Luz * luz2 = nullptr;
 
+     //Examen A3
+     /*Luz * luz_amarilla;
+     Luz * luz_verde;
+
+     unsigned char letraH = false;*/
+
      Dado * dado = nullptr;
      
      int material = 0;
      int contador = 0;
+
+     bool cambio = false;
 
      Cuadro * cuadro = nullptr;
 

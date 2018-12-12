@@ -58,6 +58,8 @@ class ObjMallaIndexada{
 
      void sigMaterial();
 
+     void cambioNormales();
+
    protected:
 
      void calcular_normales();
