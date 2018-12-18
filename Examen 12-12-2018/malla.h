@@ -44,7 +44,7 @@ class ObjMallaIndexada{
 
    public:
      // dibuja el objeto en modo inmediato
-     void draw_ModoInmediato(bool ajedrez);
+     void draw_ModoInmediato(bool ajedrez, bool esfera);
 
      // dibuja el objeto en modo diferido (usando VBOs)
      void draw_ModoDiferido(bool ajedrez);
@@ -52,13 +52,13 @@ class ObjMallaIndexada{
      // función que redibuja el objeto
      // está función llama a 'draw_MI' (modo inmediato)
      // o bien a 'draw_MD' (modo diferido, VBOs)
-     void draw(bool ajedrez, int modo_dibujado) ;
+     void draw(bool ajedrez, int modo_dibujado, bool esfera) ;
 
      GLuint CrearVBO(GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
 
      void sigMaterial();
-
-     void cambioNormales();
+     void interpolacionMateriales();
+     void sigMaterialInter();
 
    protected:
 
@@ -82,9 +82,12 @@ class ObjMallaIndexada{
 
      std::vector<Material> materiales;
 
+     std::vector<Material> materialInter;
+
      void arrayMateriales();
 
      int material = 0;
+     int materialInt = 0;
 
      bool materiales_off = true;
     

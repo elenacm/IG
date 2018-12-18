@@ -16,6 +16,7 @@
 #include "tetraedro.h"
 #include "cuadro.h"
 #include "dado.h"
+#include "abeto.h"
 
 class Escena{
 
@@ -63,14 +64,18 @@ class Escena{
      Luz * luz1 = nullptr;
      Luz * luz2 = nullptr;
 
-     //Examen A3
-     /*Luz * luz_amarilla;
-     Luz * luz_verde;
-
-     unsigned char letraH = false;*/
-
      Dado * dado = nullptr;
-     
+
+     //Ejercicio 4
+     Abeto * abeto = nullptr;
+
+    //Ejercicio 1
+     Luz * luz_roja;
+    //Ejercicio 2
+     Luz * luz_amarillo_verdoso;
+
+     unsigned char letraH = false;
+
      int material = 0;
      int contador = 0;
 

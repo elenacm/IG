@@ -69,7 +69,7 @@ void Luz::rotar(bool rota, char eje){
         glPushMatrix();
         glRotatef(8*contador, 1.0, 0.0, 0.0);
         glTranslatef(-1.0, 0.0, 0.0);
-        glLightfv(GL_LIGHT3, GL_POSITION, luz_punto);
+        glLightfv(GL_LIGHT1, GL_POSITION, luz_punto);
         glPopMatrix();
     }
     else if(eje == 'y'){
@@ -81,9 +81,9 @@ void Luz::rotar(bool rota, char eje){
     }
     else if(eje == 'z'){
         glPushMatrix();
-        glRotatef(8*contador, 0.0, 1.0, 0.0);
+        glRotatef(8*contador, 0.0, 0.0, 1.0);
           glTranslatef(-1.0, 0.0, 0.0);
-          glLightfv(GL_LIGHT1, GL_POSITION, luz_punto);
+          glLightfv(GL_LIGHT3, GL_POSITION, luz_punto);
         glPopMatrix();
     }
 

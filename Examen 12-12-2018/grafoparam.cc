@@ -144,12 +144,12 @@ void GrafoParam::extremidad(const float ag_rotacion, const float radioE, const f
   glTranslatef(0.0, -alturaC + 0.08, 0.0);
   glPushMatrix();
     glScalef(radioC, alturaC, radioC);
-    cilindro->draw(Modo_vis, usar_diferido);
+    cilindro->draw(Modo_vis, usar_diferido, false);
   glPopMatrix();
   glPushMatrix();
     glTranslatef(0.0, -radioE, 0.0);
     glScalef(radioE, radioE, radioE);
-    esfera->draw(Modo_vis, usar_diferido);
+    esfera->draw(Modo_vis, usar_diferido, true);
   glPopMatrix();
 
 
@@ -164,7 +164,7 @@ void GrafoParam::oreja(const float traslacion, const float radioE, const float T
     glTranslatef(Tx, Ty+traslacion, Tz);
     glTranslatef(0.0, radioE, 0.0);
     glScalef(radioE, radioE, radioE);
-    esfera->draw(Modo_vis, usar_diferido);
+    esfera->draw(Modo_vis, usar_diferido, true);
   glPopMatrix();
 
 }
@@ -177,12 +177,12 @@ void GrafoParam::cabeza(const float traslacion, const float radioE, const float 
   glPushMatrix();
     glTranslatef(0.0, -alturaC*0.7 + traslacion, 0.0);
     glScalef(radioC, alturaC, radioC);
-    cilindro->draw(Modo_vis, usar_diferido);
+    cilindro->draw(Modo_vis, usar_diferido, false);
   glPopMatrix();
   glPushMatrix();
     glTranslatef(0.0, -radioE+alturaC-0.08 + traslacion, 0.0);
     glScalef(radioE, radioE, radioE);
-    esfera->draw(Modo_vis, usar_diferido);
+    esfera->draw(Modo_vis, usar_diferido, true);
   glPopMatrix();
   //oreja izquierda
   oreja(traslacion, 0.09, -0.15, radioE+0.1, 0.0);
@@ -199,7 +199,7 @@ void GrafoParam::cuerpo(const float radioC, const float alturaC){
   glPushMatrix();
     glTranslatef(0.0, -alturaC, 0.0);
     glScalef(radioC, alturaC, radioC);
-    cilindro->draw(Modo_vis, usar_diferido);
+    cilindro->draw(Modo_vis, usar_diferido, false);
   glPopMatrix();
 
 }
@@ -212,7 +212,7 @@ void GrafoParam::articulacion(const float radioE){
   glPushMatrix();
     glTranslatef(0.0, radioE, 0.0);
     glScalef(radioE, radioE, radioE);
-    esfera->draw(Modo_vis, usar_diferido);
+    esfera->draw(Modo_vis, usar_diferido, true);
   glPopMatrix();
 
 }
@@ -222,7 +222,7 @@ void GrafoParam::articulacion(const float radioE){
 // es una columna (cilindro) de altura = 'altura', con un cubo encima,
 // rotado entorno a Y un ángulo en grados = 'ag_rotacion'
 
-void GrafoParam::columna(const float altura, const float ag_rotacion, const float radio_cil){
+/*void GrafoParam::columna(const float altura, const float ag_rotacion, const float radio_cil){
 
    glPushMatrix();
       glScalef( radio_cil, altura, radio_cil );
@@ -234,7 +234,7 @@ void GrafoParam::columna(const float altura, const float ag_rotacion, const floa
       cubo->draw( modo_vis, usar_diferido );
    glPopMatrix();
 
-}
+}*/
 
 void GrafoParam::sigMaterial(){
   cilindro->sigMaterial();

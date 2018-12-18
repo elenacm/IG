@@ -40,15 +40,19 @@ Escena::Escena(){
 
     dado = new Dado();
 
+    //Ejercicio 4
+    abeto = new Abeto();
+
     //direccional
     luz1 = new Luz(GLenum(GL_LIGHT0), Tupla4f(0.0, 0.0, 1.0, 0.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));
     //puntual
     luz2 = new Luz(GLenum(GL_LIGHT1), Tupla4f(-2.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 0.0, 1.0, 1.0), Tupla4f(1.0, 0.0, 1.0, 1.0));
+    
+    //Ejercicio 1
+    luz_roja = new Luz(GLenum(GL_LIGHT2), Tupla4f(-1.0, 1.0, -1.0, 0.0), Tupla4f(0.2, 0.2, 0.2, 1.0), Tupla4f(1.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 0.0, 0.0, 1.0));
 
-    //Examen A3
-    /*luz_amarilla = new Luz(GLenum(GL_LIGHT2), Tupla4f(2.0, -1.0, -1.0, 0.0), Tupla4f(0.2, 0.2, 0.2, 1.0), Tupla4f(1.0, 1.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 0.0, 1.0));
-    luz_verde = new Luz(GLenum(GL_LIGHT3), Tupla4f(11, -11, 11, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 1.0, 0.0, 1.0), Tupla4f(0.0, 1.0, 0.0, 1.0));
-    */
+    //Ejercicio 2
+    luz_amarillo_verdoso = new Luz(GLenum(GL_LIGHT3), Tupla4f(11.0, 11.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.5, 1.0, 0.0, 1.0), Tupla4f(0.5, 1.0, 0.0, 1.0));
 
     num_modos = 6;
     num_objetos = 10; // se usa al pulsar la tecla 'O' (rotar objeto actual)
@@ -110,44 +114,44 @@ void Escena::dibujar_objeto_actual(){
    switch(objeto_actual){
       case 0: //Cubo
         if (cubo != nullptr){
-          if(modo_actual == 3) cubo->draw(true, modo_dibujado);
-          else cubo->draw(false, modo_dibujado);
+          if(modo_actual == 3) cubo->draw(true, modo_dibujado, false);
+          else cubo->draw(false, modo_dibujado, false);
         }
       break;
       case 1: //Tetraedro
         if (tetraedro != nullptr){
-          if(modo_actual == 3) tetraedro->draw(true, modo_dibujado);
-          else tetraedro->draw(false, modo_dibujado);
+          if(modo_actual == 3) tetraedro->draw(true, modo_dibujado, false);
+          else tetraedro->draw(false, modo_dibujado, false);
         }
       break;
       case 2: //Objeto PLY
         if (objetoPLY != nullptr){
-          if(modo_actual == 3) objetoPLY->draw(true, modo_dibujado);
-          else objetoPLY->draw(false, modo_dibujado);
+          if(modo_actual == 3) objetoPLY->draw(true, modo_dibujado, false);
+          else objetoPLY->draw(false, modo_dibujado, false);
         }
       break;
       case 3: //Objeto Revolución (Peón)
         if(objetoRev != nullptr){
-          if(modo_actual == 3) objetoRev->draw(true, modo_dibujado);
-          else objetoRev->draw(false, modo_dibujado);
+          if(modo_actual == 3) objetoRev->draw(true, modo_dibujado, false);
+          else objetoRev->draw(false, modo_dibujado, false);
         }
       break;
       case 4: //Cilindro
         if (cilindro != nullptr){
-          if(modo_actual == 3) cilindro->draw(true, modo_dibujado);
-          else cilindro->draw(false, modo_dibujado);
+          if(modo_actual == 3) cilindro->draw(true, modo_dibujado, false);
+          else cilindro->draw(false, modo_dibujado, false);
         }
       break;
       case 5: //Cono
         if (cono != nullptr){
-          if(modo_actual == 3) cono->draw(true, modo_dibujado);
-          else cono->draw(false, modo_dibujado);
+          if(modo_actual == 3) cono->draw(true, modo_dibujado, false);
+          else cono->draw(false, modo_dibujado, false);
         }
       break;
       case 6: //Esfera
         if (esfera != nullptr){
-          if(modo_actual == 3) esfera->draw(true, modo_dibujado);
-          else esfera->draw(false, modo_dibujado);
+          if(modo_actual == 3) esfera->draw(true, modo_dibujado, true);
+          else esfera->draw(false, modo_dibujado, true);
         }
       break;
       case 7: //Objeto Jerárquico
@@ -160,12 +164,31 @@ void Escena::dibujar_objeto_actual(){
         }
       break;
       case 8: //cuadro
-        if(cuadro != nullptr) cuadro->draw(false, modo_dibujado);
+        if(cuadro != nullptr) cuadro->draw(false, modo_dibujado, false);
       break;
-      case 9: // cubo textura
-        if(dado != nullptr){
-          if(modo_actual == 3) dado->draw(true, modo_dibujado);
-          else dado->draw(false, modo_dibujado);
+      case 9:
+        if(abeto != nullptr){
+          glPushMatrix();
+            glPushMatrix();
+              glTranslatef(0.0, 0.5, 0.0);
+              glScalef(0.5, 0.5, 0.5);
+              abeto->draw(true, modo_dibujado, false);
+            glPopMatrix();
+            glPushMatrix();
+              glScalef(1.0, 1.0, 1.0);
+              abeto->draw(true, modo_dibujado, false);
+            glPopMatrix();
+            glPushMatrix();
+              glTranslatef(0.0, -0.5, 0.0);
+              glScalef(1.5, 1.5, 1.5);
+              abeto->draw(true, modo_dibujado, false);
+            glPopMatrix();
+            glPushMatrix();
+              glTranslatef(0.0, -1.0, 0.0);
+              glScalef(2.0, 2.0, 2.0);
+              abeto->draw(true, modo_dibujado, false);
+            glPopMatrix();
+          glPopMatrix();
         }
       break;
       default:
@@ -248,18 +271,18 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y){
       case '<': //decrementa el valor usado para las animaciones
         objJerarquico->decelerar();
       break;
-      case 'L':
-        luz1->activar();
-        //luz_amarilla->activar();
+      case 'L': //Ejercicio 1
+        //luz1->activar();
+        luz_roja->activar();
       break;
-      case 'K':
-        luz2->activar();
-        //luz_verde->activar();
+      case 'K': //Ejercicio 2
+        //luz2->activar();
+        luz_amarillo_verdoso->activar();
       break;    
-      /*case 'H':
+      case 'H':
         letraH = true;
         conmutarAcciones();
-      break;  */
+      break;
       case 'N': //materiales
         switch(objeto_actual){
           case 0:
@@ -281,23 +304,13 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y){
             cono->sigMaterial();
           break;
           case 6:
-            esfera->sigMaterial();
+            esfera->sigMaterialInter();
           break;
           case 7:
             objJerarquico->sigMaterial();
           break;
         }
       break;      
-      case 'C': //cambio de normales orientadas a las normales de un cubo
-        if(!cambio){
-          cambio = true;
-          if(objeto_actual == 2)  objetoPLY->cambioNormales();
-          else  std::cout << "No es el objeto PLY" << std::endl;
-        }
-        else {
-          cambio = false;
-        }
-      break;
    }
 
    return false;
@@ -372,14 +385,18 @@ void Escena::change_observer(){
 void Escena::mgeDesocupado(){
   objJerarquico->actualizarEstado();
   if(objeto_actual != 7) luz2->rotar(true, 'y');
-  //if(letraH) luz_verde->rotar(true, 'x');
+  if(letraH) luz_amarillo_verdoso->rotar(true, 'z');
+  //if(objeto_actual == 6) esfera->sigMaterialInter();
   glutPostRedisplay();
 }
 
 //Se encarga de activar o desactivar las animaciones
 void Escena::conmutarAcciones(){
-    if(!animacion){ //|| letraH
+    if(!animacion || !letraH){
       animacion = true;
+      letraH = true;
+
+      if(objeto_actual == 6) esfera->sigMaterialInter();
 
       if(objeto_actual == 7)
         objJerarquico->inicioAnimaciones();
@@ -388,7 +405,7 @@ void Escena::conmutarAcciones(){
     }
     else{
       animacion = false;
-      //letraH = false;
+      letraH = false;
       glutIdleFunc(nullptr);
     }
 }

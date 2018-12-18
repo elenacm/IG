@@ -18,7 +18,7 @@ void ObjMallaIndexada::arrayMateriales(){
   Tupla4f especular, ambiental, difusa;
   float brillo;
   
-  //material turquesa
+  /*//material turquesa
   ambiental = {0.1, 0.18725, 0.1745, 1.0};
   difusa = {0.396, 0.74151, 0.69102, 1.0};
   especular = {0.297254, 0.30829, 0.306678, 1.0};
@@ -40,23 +40,61 @@ void ObjMallaIndexada::arrayMateriales(){
   especular = {0.628281, 0.555802, 0.366065, 1.0};
   brillo = 51.2;
 
-  materiales.push_back(Material(especular, ambiental, difusa, brillo));
+  materiales.push_back(Material(especular, ambiental, difusa, brillo));*/
 
-  //material gris
-  ambiental = {0.2, 0.2, 0.2, 1.0};
-  difusa = {0.5, 0.5, 0.5, 1.0};
-  especular = {0.5, 0.5, 0.5, 1.0};
-  brillo = 50.9;
-
-  materiales.push_back(Material(especular, ambiental, difusa, brillo));
-
-  //material rojo
-  ambiental = {0.2, 0.0, 0.0, 1.0};
-  difusa = {0.6, 0.1,0.1, 1.0};
-  especular = {0.7, 0.6, 0.6, 1.0};
-  brillo = 75.4;
+  //material cobre
+  ambiental = {0.19125, 0.0735, 0.0225, 1.0};
+  difusa = {0.7038, 0.27048, 0.0828, 1.0};
+  especular = {0.256777, 0.137622, 0.086014, 1.0};
+  brillo = 12.8;
 
   materiales.push_back(Material(especular, ambiental, difusa, brillo));
+
+  //material Acero
+  ambiental = {0.25, 0.25, 0.25, 1.0};
+  difusa = {0.4, 0.4, 0.4, 1.0};
+  especular = {0.7745, 0.7745, 0.7745, 1.0};
+  brillo = 76.8;
+
+  materiales.push_back(Material(especular, ambiental, difusa, brillo));
+}
+
+void ObjMallaIndexada::interpolacionMateriales(){
+  Tupla4f color_inicial_a, color_inicial_d, color_inicial_e;
+  Tupla4f color_final_a, color_final_d, color_final_e;
+  Tupla4f color_a, color_d, color_e;
+  float instante_inicial, instante_final, instante;
+  float brillo_inicial, brillo_final, brillo;
+
+  color_inicial_a = Tupla4f(0.19125, 0.0735, 0.0225, 1.0);
+  color_inicial_d = Tupla4f(0.7038, 0.27048, 0.0828, 1.0);
+  color_inicial_e = Tupla4f(0.256777, 0.137622, 0.086014, 1.0);
+
+  color_final_a = Tupla4f(0.25, 0.25, 0.25, 1.0);
+  color_final_d = Tupla4f(0.4, 0.4, 0.4, 1.0);
+  color_final_e = Tupla4f(0.7745, 0.7745, 0.7745, 1.0);
+
+  color_a = color_inicial_a;
+  color_d = color_inicial_d;
+  color_e = color_inicial_e;
+
+  brillo_inicial = 12.8;
+  brillo_final = 76.8;
+
+  instante_inicial = 0.0;
+  instante_final = 10.0;
+
+  brillo = brillo_inicial;
+
+  for(instante = instante_inicial; instante <= instante_final; instante++){
+    color_a = color_inicial_a + ((instante - instante_inicial)/(instante_final - instante_inicial))*(color_final_a - color_inicial_a);
+    color_d = color_inicial_d + ((instante - instante_inicial)/(instante_final - instante_inicial))*(color_final_d - color_inicial_d);
+    color_e = color_inicial_e + ((instante - instante_inicial)/(instante_final - instante_inicial))*(color_final_e - color_inicial_e);
+
+    brillo = brillo_inicial + ((instante - instante_inicial)/(instante_final - instante_inicial))*(brillo_final - brillo_inicial);
+
+    materialInter.push_back(Material(color_e, color_a, color_d, brillo));
+  }
 }
 
 void ObjMallaIndexada::sigMaterial(){
@@ -66,37 +104,14 @@ void ObjMallaIndexada::sigMaterial(){
   material = (material+1) % materiales.size();
 }
 
-void ObjMallaIndexada::cambioNormales(){
-  float maximo;
-  int indice;
-
-  if(!normal_vertices.empty()){
-    for(int i = 0; i < normal_vertices.size(); i++){
-      maximo = normal_vertices[i][0];
-      indice = 0;
-
-      if(abs(maximo) < abs(normal_vertices[i][1])){
-        maximo = normal_vertices[i][1];
-        indice = 1;
-      }
-      else if(abs(maximo) < abs(normal_vertices[i][2])){
-        maximo = normal_vertices[i][2];
-        indice = 2;
-      }
-
-      switch(indice){
-        case 0: normal_vertices[i] = {maximo, 0.0, 0.0}; break;
-        case 1: normal_vertices[i] = {0.0, maximo, 0.0}; break;
-        case 2: normal_vertices[i] = {0.0, 0.0, maximo}; break;
-      }
-    }
-  }
+void ObjMallaIndexada::sigMaterialInter(){
+  materialInt = (materialInt+1) % materialInter.size();
 }
 
 // -----------------------------------------------------------------------------
 // Visualización en modo inmediato con 'glDrawElements'
 
-void ObjMallaIndexada::draw_ModoInmediato(bool ajedrez){
+void ObjMallaIndexada::draw_ModoInmediato(bool ajedrez, bool esfera){
 
   if(glIsEnabled(GL_LIGHTING)){
     //usamos normales y material
@@ -104,10 +119,20 @@ void ObjMallaIndexada::draw_ModoInmediato(bool ajedrez){
     glEnableClientState(GL_NORMAL_ARRAY); //habilitar uso de normales
     glNormalPointer(GL_FLOAT, 0, normal_vertices.data());
 
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materiales[material].especular);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, materiales[material].ambiental);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materiales[material].difusa);
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, materiales[material].brillo);
+    interpolacionMateriales();
+
+    if(esfera){
+      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materialInter[materialInt].especular);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, materialInter[materialInt].ambiental);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materialInter[materialInt].difusa);
+      glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, materialInter[materialInt].brillo);
+    }
+    else{
+      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materiales[material].especular);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, materiales[material].ambiental);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materiales[material].difusa);
+      glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, materiales[material].brillo);
+    }
   }
 
   if(!texturas.empty()){
@@ -208,14 +233,14 @@ GLuint ObjMallaIndexada::CrearVBO(GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid 
 // Función de visualización de la malla,
 // puede llamar a  draw_ModoInmediato o bien a draw_ModoDiferido
 
-void ObjMallaIndexada::draw(bool ajedrez, int modo_dibujado){
+void ObjMallaIndexada::draw(bool ajedrez, int modo_dibujado, bool esfera){
 
   if(materiales_off){
     arrayMateriales();
     materiales_off = false;
   }
 
-  if(modo_dibujado == 0) draw_ModoInmediato(ajedrez);
+  if(modo_dibujado == 0) draw_ModoInmediato(ajedrez, esfera);
   else draw_ModoDiferido(ajedrez);
 
 }

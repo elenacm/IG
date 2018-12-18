@@ -83,42 +83,24 @@ void ObjMallaIndexada::draw_ModoInmediato(bool ajedrez){
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, materiales[material].brillo);
   }
 
-  if(!texturas.empty()){
-    glEnableClientState(GL_NORMAL_ARRAY); //habilitar uso de normales
-    glEnableClientState(GL_VERTEX_ARRAY); //habilitar uso de un array de vértices
+  glEnableClientState(GL_VERTEX_ARRAY); //habilitar uso de un array de vértices
+  glEnableClientState(GL_COLOR_ARRAY);  //habilitar uso de un array de colores
 
-    glVertexPointer(3, GL_FLOAT, 0, vertices.data()); //Establecer los vértices
-    glNormalPointer(GL_FLOAT, 0, normal_vertices.data());
+  glColorPointer(3, GL_FLOAT, 0, color.data()); //Establecer el color inicial
+  glVertexPointer(3, GL_FLOAT, 0, vertices.data()); //Establecer los vértices
 
-    texturas[0].activar();
+  //Dibujar los triangulos_pares de la figura
+  glDrawElements(GL_TRIANGLES, triangulos_pares.size()*3, GL_UNSIGNED_INT, triangulos_pares.data());
 
-    glDrawElements(GL_TRIANGLES, triangulos.size()*3, GL_UNSIGNED_INT, triangulos.data());
-    glBindTexture(GL_TEXTURE_2D, 0);
+  if(ajedrez){ glColorPointer(3, GL_FLOAT, 0, color_otro.data()); } //Establecer otro color
 
-    glDisable(GL_TEXTURE_2D);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);   //deshabilitar array de vértices
-    glDisableClientState(GL_NORMAL_ARRAY);  //deshabilitar array de normales
-  }
-  else{
-    glEnableClientState(GL_VERTEX_ARRAY); //habilitar uso de un array de vértices
-    glEnableClientState(GL_COLOR_ARRAY);  //habilitar uso de un array de colores
+  //Dibujar los triangulos_impares
+  glDrawElements(GL_TRIANGLES, triangulos_impares.size()*3, GL_UNSIGNED_INT, triangulos_impares.data());
 
-    glColorPointer(3, GL_FLOAT, 0, color.data()); //Establecer el color inicial
-    glVertexPointer(3, GL_FLOAT, 0, vertices.data()); //Establecer los vértices
+  glDisableClientState(GL_COLOR_ARRAY);   //deshabilitar array de colores
+  glDisableClientState(GL_VERTEX_ARRAY);  //deshabilitar array de vértices
+  glDisableClientState(GL_NORMAL_ARRAY);
 
-    //Dibujar los triangulos_pares de la figura
-    glDrawElements(GL_TRIANGLES, triangulos_pares.size()*3, GL_UNSIGNED_INT, triangulos_pares.data());
-
-    if(ajedrez){ glColorPointer(3, GL_FLOAT, 0, color_otro.data()); } //Establecer otro color
-
-    //Dibujar los triangulos_impares
-    glDrawElements(GL_TRIANGLES, triangulos_impares.size()*3, GL_UNSIGNED_INT, triangulos_impares.data());
-
-    glDisableClientState(GL_COLOR_ARRAY);   //deshabilitar array de colores
-    glDisableClientState(GL_VERTEX_ARRAY);  //deshabilitar array de vértices
-    glDisableClientState(GL_NORMAL_ARRAY);
-  }
 }
 
 // -----------------------------------------------------------------------------

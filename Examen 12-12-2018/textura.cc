@@ -37,14 +37,11 @@ Textura::Textura(const char * archivo){
     alto = imagen.height();
     ancho = imagen.width();
 
-    std::vector<Tupla2f> tVert;
+    coordenadas.push_back(Tupla2f(0.0, 1.0));
+    coordenadas.push_back(Tupla2f(1.0, 1.0));
+    coordenadas.push_back(Tupla2f(0.0, 0.0));
+    coordenadas.push_back(Tupla2f(1.0, 0.0));
 
-    tVert.push_back(Tupla2f(0.0, 1.0));
-    tVert.push_back(Tupla2f(1.0, 1.0));
-    tVert.push_back(Tupla2f(0.0, 0.0));
-    tVert.push_back(Tupla2f(1.0, 0.0));
-
-    setTextVert(tVert);
 }
 
 void Textura::setTextVert(std::vector<Tupla2f> mitupla){

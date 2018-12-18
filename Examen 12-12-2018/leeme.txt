@@ -1,0 +1,6 @@
+L -> luz ejercicio 1
+K -> luz ejercicio 2
+H -> luz ejercicio 3
+A -> interpolacion ejercicio 4
+O -> cambio de objetos
+M -> cambio de modos
