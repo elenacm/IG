@@ -82,11 +82,11 @@ void ObjMallaIndexada::interpolacionMateriales(){
   brillo_final = 76.8;
 
   instante_inicial = 0.0;
-  instante_final = 10.0;
+  instante_final = 1000.0;
 
   brillo = brillo_inicial;
 
-  for(instante = instante_inicial; instante <= instante_final; instante++){
+  for(instante = instante_inicial; instante <= instante_final; instante += 5){
     color_a = color_inicial_a + ((instante - instante_inicial)/(instante_final - instante_inicial))*(color_final_a - color_inicial_a);
     color_d = color_inicial_d + ((instante - instante_inicial)/(instante_final - instante_inicial))*(color_final_d - color_inicial_d);
     color_e = color_inicial_e + ((instante - instante_inicial)/(instante_final - instante_inicial))*(color_final_e - color_inicial_e);

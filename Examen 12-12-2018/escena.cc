@@ -280,8 +280,14 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y){
         luz_amarillo_verdoso->activar();
       break;    
       case 'H':
-        letraH = true;
-        conmutarAcciones();
+        if(letraH){
+          letraH = false;
+          conmutarAcciones();
+        }
+        else{
+          letraH = true;
+          conmutarAcciones();
+        }
       break;
       case 'N': //materiales
         switch(objeto_actual){
@@ -384,19 +390,19 @@ void Escena::change_observer(){
 //Se encarga de actualizar el estado de los parámetros del objeto jerárquico
 void Escena::mgeDesocupado(){
   objJerarquico->actualizarEstado();
-  if(objeto_actual != 7) luz2->rotar(true, 'y');
+  //if(objeto_actual != 7) luz2->rotar(true, 'y');
   if(letraH) luz_amarillo_verdoso->rotar(true, 'z');
-  //if(objeto_actual == 6) esfera->sigMaterialInter();
+  if(objeto_actual == 6) esfera->sigMaterialInter();
   glutPostRedisplay();
 }
 
 //Se encarga de activar o desactivar las animaciones
 void Escena::conmutarAcciones(){
-    if(!animacion || !letraH){
+    if(!animacion || letraH){
       animacion = true;
-      letraH = true;
+      //letraH = true;
 
-      if(objeto_actual == 6) esfera->sigMaterialInter();
+      //if(objeto_actual == 6) esfera->sigMaterialInter();
 
       if(objeto_actual == 7)
         objJerarquico->inicioAnimaciones();
